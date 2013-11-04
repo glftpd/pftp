@@ -1,0 +1,5 @@
+read the glftpd-TLS docs for more info about ftp with ssl/tls support
+get it from http://pftp.suxx.sk
+
+This product includes cryptographic software written by Eric Young
+(eay@cryptsoft.com)

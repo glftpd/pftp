@@ -1,0 +1,64 @@
+#- the whole file isn't very userfriendly, so please JUST use the form as
+#  described. Otherwise unpredictable things may happen!
+#- comments start with a "#" as the FIRST character, the whole line will be
+#  ignored
+#- don't make empty lines, I'm not microshit where eveyone can fuck up config-
+#  files without worrying
+#- items have the form "ITEMNAME=VALUE". no spaces between, nothing.
+#
+#- now you can specify the following items:
+#        - LOCALIP      define ip of your computer seen from internet 
+#
+#        - DEVICE       if you are using a dialup or a machine with multiple
+#                       network-devices, you have to use this item or you can't
+#                       get linfxp to work. You can determine what devices you
+#                       have by issuing "ifcfg".
+#                       ex.: "DEVICE=ppp0" "DEVICE=eth0:13"...
+#
+#	- OKAYDIR	a (writable) dir where the .okay and .error files for
+#			transferred files are stored. Those are temporary
+#			files needed for internal synchronization, and nothing
+#			else. Dont worry about it, just wipe its contents every
+#			now and then. Never choose a dir where
+#			other users could put their stuff in too, like /tmp/ !
+#			NEVER use a relative dir, ALWAYS absolute!
+#			ex.: "OKAYDIR=/home/me/pftp/okays"
+#
+#       - DEFAULTFILTER list of excludes used for each site
+#
+#       - LOCALDIR      directore where pftp cwd after bookmarks are readed
+#                       basically its used if you want your localhost window
+#                       to have in a specific window
+#
+#       - VIEWFILTER    set to 1 if you have terminal that can handle 8-bit
+#                       characters (for example console :)), else use 0
+#
+#       - DEBUG         (values 0 or 1) 1 will turn on deboug output to
+#                       pftp.debug in your OKAY dir, send me that file
+#                       if pftp crashes
+#
+# -----------------------------------------------------------------------------
+# modify to your needs
+# -----------------------------------------------------------------------------
+
+#only specify LOCALIP or DEVICE !!! not both
+
+#LOCALIP=192.168.0.5
+
+DEVICE=eth0
+
+VIEWFILTER=0
+
+DEFAULTFILTER=*nuked* .* *.bad [* -[*
+
+# remember, NEVER use /tmp/ here !
+OKAYDIR=/root/devel/pftp/ok
+
+LOCALDIR=./
+
+DEBUG=1
+
+#
+# -----------------------------------------------------------------------------
+# dont touch these last lines!
+# -----------------------------------------------------------------------------

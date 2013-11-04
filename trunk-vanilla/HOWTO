@@ -1,0 +1,33 @@
+this is a small example of how to use some features in pftp
+
+make sure you read the readme file in directory old
+
+1. transfering whole dir with subdirs
+ - well just make sure you have FXP mode set, then just press 't' on the
+   dir u want to upload..., you can also select more dirs, or files to
+   transfer...
+
+2. moving manually (both fxp and ftp mode)
+ - press 'p' on the dir to get inside of it on both servers (if the dir isnt
+   created yet on the destiny server, pftp will create it, then you should
+   just press 'a' to compare the files, and then 't' to transfer them
+
+3. using of exclude files/dirs...
+ - go to site preferences (from bookmarks press 'm' or 'e', or if you are
+   logged in press 'e' from filelist window) then using 'SPACE' check the
+   exclude option, press 'ENTER' on it to edit the field...
+   example of the field : "*missing* *.bad *incomplete* [*"
+    
+   exclude is used during dir transfers, filelist comparing, new dirs
+   anouncing, etc...
+
+4. read the README in 'old' directory, it is for older version, but you can
+   learn from it how to use chain mode, what to edit in the config file, and
+   lot more
+   
+5. stoping transfer
+   at the moment you cant just stop transfer but you still can kill it
+   by pressing 's' and then 'c' on the site...
+   
+6. contacting
+   if you have any question or you miss something in pftp mail me to hoe@dle.sk

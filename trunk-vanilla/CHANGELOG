@@ -1,0 +1,617 @@
+                   ---- pftpfxp II@0.x.x (c) pftp_team -----
+
+contact informations :
+----------------------------
+WWW:	http://pftp.suxx.sk
+FORUMS: http://pftp.suxx.sk/forums
+
+II@0.11.5 FUTURE EDiTiON:
+---------------------------
+- FIX : compliation fixes
+- CHANGE : SSL FXP automatically
+- FIX : SSL fixes
+
+II@0.11.4 FOGGY EDiTiON:
+---------------------------
+- CHANGE : dirlist will now be empty during dirlist changes but not when
+  refreshing dir
+- FIX : fixed crash with dirlist formating when group name was 2 words, it
+  will ignore weird lines now
+- FIX : applied resize/empty dirlist fix by ackmed
+- FIX : applied fix by ackmed for stupid config file reading overflow
+- FIX : fixed crash when sorting empty dirlist (thanx ackmed and xt)
+- CHANGE : changed -lncurses to -lcurses, if this causes some problems please
+  mail me or post to the forums (this should at least fix obsd compilation
+  problems)
+- FIX : "unable to bind data socket" error should be fixed, by ackmed
+- NEW : time after fxp is now displayed in MM:SS format, by ackmed
+- NEW : added OS X/Darwin support, by ackmed
+- NEW : if you get site msg in glftpd you will be notified now, by ackmed
+- NEW : you can change bookmarks password with key "|", by ackmed
+- NEW : you can scroll filelist to left/right with "<" and ">", by ackmed
+- NEW : statline lines will now be splitted to more lines if too long, by ackmed
+- NEW : login failure will display server reply line in statline
+ 
+II@0.11.3 SEPTEMBER EDiTiON:
+---------------------------
+- FIX : should compile as static on fbsd now
+- FIX : crash that happened rarely, usually during stealth mode dirlisting 
+ (control buffer size +1 in tcp.h - for mew :P)
+- CHANGE : increased networking buffer, should increase dl/up speed ? plz let me know about results
+- NEW : new sorting algorithm, dirlist sorting is now MUCH faster, very usefull in big directories
+ (tested with 8000+ directories in one dirlist, speed was before 5 seconds, now less than 1 sec)
+- NEW : while changing directory the window with dirlist will be empty
+- CHANGE : debug file will now be created only if you ./configure --debug and set DEBUG=1 in config
+- CHANGE : during fxp files will now be transfered first, directories will recurse after files...
+- NEW : during fxp pftp will try to mark and unmark files in dirlist with yellow color :P
+
+II@0.11.2 AUGUST EDiTiON:
+---------------------------
+- FIX : you can set "jump to newest" in preferences again
+- FIX : "random refresh/noop" is now saved properly
+- FIX : fixed rare stealth mode dirlist filename damaging in filelist :)
+- FIX : attempted to fix big ports problems for those who has them
+  all works ok to me so please report if it helped etc to pftp forums
+- NEW : stealth now works in no_lreply mode, its kinda hidden feature in
+  glftpd and other ftpds, its turned on by logging in with "-" before your
+  password "-password", and it will make the ftpd not to send so much
+  messages to client, so it will speed up some things but you will loose
+  lots of info from server... thanx for telling me this exists :) no idea
+  how that got into glftpd (maybe standard wu-ftpd trick ?)
+- FIX : again fixed name for Crashev, i hope its the last time now :)
+- FIX : fixed idiotic bug that was causing "unable to create temp file" in
+  win32 version, was caused by okay dir setting in .pftpconf which wasnt 
+  absolute, and if you changed local directory it failed looking for "ok" directory
+  now pftp will add currect directory to okay dir if its not absolute (starting with /)
+  (many ppl reported this over the time and i wasnt able to reproduce it until i accidentally
+  changed my local directory today :P)
+- INFO : if you want to resize in the win32 version make sure you have window size and buffered
+  size with same value (in the windows resize dialog), else the screen will be messed up (this
+  is needed in w2k/xp, not tested on 9x/me)
+
+II@0.11.1 SUMMER EDiTiON:
+---------------------------
+- FIX : cygwin build wasnt working
+- CHANGE : rewritten networking system, should properly handle
+  timeouts, network errors etc and should be FASTER! timeout is set to
+  2 minutes, should be enuf and maybe too much ? but its nice in case of
+  big lag
+- FIX : pftp will now properly detect network failure for connections (i hope)
+- FIX : pftp will now properly close opened connections so you wont run out
+  of sockets... (again i hope)
+- FIX : fixed stealth dirlist in some cases, thanx to b*** for having
+  broken sitedir so i could test it :) (actually i had to rewrite whole networking
+  to fix this :))
+
+II@0.11.0 MEWTWO EDiTiON:
+---------------------------
+- INFO : new bookmarks again, pftp will attempt to autoconvert but
+  make sure you add site ports to hostnames BEFORE upgrading to 0.11.0 
+- INFO : make sure you try to turn on stealth mode on your sites,
+  refreshing dirlist will be MUCH faster if the site deamon supports this
+  (works on glftpd and other unix ftpds, doesnt work with raidenftpd etc)
+  this feature help alot on tls site, there may be bugs in it so report
+  problems to me please
+- FIX : can be now compiled without ssl support again (by ms)
+- FIX : makefiles reworked, report problems :)
+- NEW : filesizes are now displayed in new nicer format (by ms)
+- NEW : more filesizes changes, report bugs :)
+- NEW : added distclean to makefile (by ms)
+- CHANGE : to quit press 'Q' (shift-q), changed from 'q' so you wont quit
+  by accident anymore
+- CHANGE : some small color scheme changes
+- FIX : 'k' upload (.ok file) works again without logging off the site
+- ADD : partial merge with mew4, i didnt include his keyboard shortcut changes
+  and new sections support, for me its a bit useless and ugly :)
+   anyway this merge means :
+  -removed PORT setting from config , you have to add it to hostname
+ (hostname:port)  
+  -not included LASTFILEFILTER, waiting for mew to add FIRSTFILEFILTER :) 
+  -moved random refresh and stealth settings to per site preferences
+  -added retry login ability with configurable pause and attempt count
+  -dont ask about adding 'e' command from mew, i consider that autotrading
+- NEW : inteligent TYPE setting (based on the mew idea)
+- NEW : autoassign autologged sites to shortcut keys in pairs (-connect=s1,s2
+  will put s1,s2 to shortcut key 1)
+- FIX : after big memory audit i fixed couple of memleaks
+     
+II@0.10.1 WiNDOWS EDiTiON:
+---------------------------
+- FIX : fixed black borders with rh 7.3 ncurses
+- FIX : fixed some cygwin problems (every thread has same pid in cygwin heh)
+- FIX : small ssl fix causing problems in cygwin
+ (thanx to everyone for reporting these problems)
+- FIX : fixed name of crashev in changelog :)
+
+II@0.10.0 AfteR EDiTiON:
+---------------------------
+- NEW : applied prefs patch by kot (adds some usefull settings for sites)
+- NEW : did some cleanup in the patch + fixed some problems
+- NEW : fixed problem with raiden ftpd causing pftp to crash when downloading
+  mp3 files (problem reported and fixed by crashev) (i didnt test this myself)
+- INFO : boomark file is now changed a bit, pftp will autotry to upgrade
+  old bookmark file
+- INFO : removed some useless settings from config file :)
+  
+II@0.9.10 BuSTeD EDiTiON:
+---------------------------
+beta1:
+- FIX : crashfix with serverswitching (rare)
+- NEW : pftp will now try to encrypt local transfers : dirlist, leeching...
+  fxp crypting is not supported yet...
+beta2:
+- FIX : problem with passive encrypted connections
+- FIX : crashfix when killing fxp sites
+- NEW : shift-T in fxp mode will transfer selected and disconnect from the
+  sites
+
+II@0.9.9 BuSTeD EDiTiON:
+---------------------------
+- NEW : you can now scroll to left and right in view file window
+- FIX : some FXP engine changes (if you get nuked during upload
+  pftp should not create subdirs anymore...)
+- NEW : !!! you can now abort fxp queue transfer by pressing 't' again
+- NEW : added next/prev server switch, press '[' or ']'
+- FIX : fixed cursor position in dialog input window
+- CHANGE : many changes in resize handler, hopefully it wont break anything
+- FIX : changed recv() calls to read() and pftp now again works in CYGWiN :)
+  (there is some recv() bug with non-blocking sockets in cygwin...)
+- FIX : pressing 'x' (site command) now works in fbsd, still dunno why
+  it crashes when you resize terminal on fbsd and raana is even more
+  lazy then me
+- NEW : !!! you can now scroll cursor left/right in input window
+- FIX : some more CYGWiN fixes, now it doesnt crash when you quit pftp
+- CHANGE : changed CTRL-key jumping to ESC-key (in filelist and bookmarks)
+- NEW : added support for HOME/END keys, works in filelist, bookmarks,  
+  input line, file viewer etc
+- NEW : (by sadman) new commandline parameter -connect=site1,site2,...
+  will make pftp to autlogin to sites site1 and site2...
+- NEW : added ability to disable TLS for some sites, you can do it in .pftpconf
+  until i add it to bookmarks, just add line NOTLS=site1,site2...
+- CHANGE : again changed keyhandler coz the pause for ESC-key combinations
+  was too small, now if you want to just press ESC press it 2x or you
+  will have to wait much longer for it to timeout, this gives you bigger
+  chance to press a key after ESC for example for ESC-number combinations
+- FIX (by sadman) : fixed typo in reverse fxp
+- FIX : more cleanup in fxp code, removed ugly display-server memory problems
+- FIX : lots and lots fixes in pthread canceling, finally threads behave nice
+  in CYGWiN and also this possibly fixed issues in other platforms
+- NEW : you can now scroll left/right in log too
+- NEW : added logging messages to pftp.debug.log file, this will be usefull
+  if pftp crashes, so i can check what was happening etc, plz if you get
+  any segfaults send that file to me with info what was you doing etc
+  this file is recreated each time you run pftp (the file will be in
+  your okaydir so check the .pftpconf)
+- NEW (by usurper and fixored by me): added some bnc support, to site host
+  you can add "ip ip2:port ip3" normally default port is used, but if the
+  bnc has different one you can specify it, note next ip is tried it connect()
+  fails (BTW strtok() sux !!!!, strsep rox :))
+beta 6:
+- FIX : fixed crash with filename longer then 200 chars 
+- CHANGE : coz some idiots added all their sites to NOTLS line in .pftpconf
+  (even those that had no problems loggin in) i have decided to add a pause
+  to NOTLS sites, so basically now its faster to let the site try to go in
+  TLS mode....
+- INFO : changelog for 0.9.9 is getting big :)
+- FIX : fixed stupid bug when aborting fxp transfer from destination window  
+- FIX : more fixes in resize handler, one day it will work properly
+  if u manage to crash it plz mail me pftpdebuglog from your ok dir
+  (looks like i am the only one getting resize crashes from time to time heh)
+beta7:
+- FIX : more resize fixes, i am really the only one who can make it crash
+  and i still dunno how, and why :) anyway now signals are handled properly,
+  only main thread is getting sigwinch signal, so lets hope this is the last
+  time i am fixing terminal resize
+- NEW : fixed CYGWIN codepage problems, all i had to do was to add 
+  "set CYGWIN=codepage:oem", to runme.bat  
+- NEW : added more debug info to some functions, you can turn on/off the debug
+  output in the .pftpconf now (DEBUG=1/0)
+beta8:
+- FIX : i am tired of that resize crashing, i tried some more changes
+  this time :)
+- NEW : temp file creating changed as some ppl complained about cygwin
+  version problems, i never had that problem heh, maybe its fixed now ?
+    
+II@0.9.8 HoE EDiTiON:
+---------------------------
+- NEW : added LOCALIP to .pftpconf, you can now either use DEVICE setting
+  or LOCALIP setting
+- NEW : added X-DUPE feature (glftpd 1.24+)
+  (please note that X-DUPE feature is not automatically added by upgrading
+  to glftpd 1.24+, you need to have xdupe line in glftpd.conf, plz refer
+  to glftpd docs !)
+- NEW : (by raana) added sorting by size
+- NEW : (by raana) added files skipping in ftp mode
+- NEW : timestamps to logs
+- CHANGE : directories starting with '[' or '!'  are now after other dirs
+- NEW : added DEFAULTFILTER to .pftpconf (its a global file ignore list)
+- NEW : fixed random segf during fxp (added workaround for glftpd bug)
+  and added some recovery checks for bad pasv replies, etc
+  plz report any segfaults from now on, but i need to know how to reproduce
+  the crashes or else ill not be able to fix it
+- FIX : X-DUPE moved after login so custom x-dupe implementations can work
+- CHANGE : fast server switching works now different way, you can assign
+  a number 2 servers with ESC+<1-9> and then with the key <1-9> switch to
+  these 2 server, for example you have server A in left window and B in right
+  and you press ESC+1, later anytime you press 1 server A will come to left
+  window and server B to right one (idea by Snail0r)
+- FIX : attempted to fix some screen size change crashes
+- FIX : xdupe is now case insesitive + fixed some bugs (+one memory leak)
+- INFO : there will be no more public source from now on, this is because
+  some ppl remove the password protection for userfile to log in the sites
+  faster and because there are some patches for pftp that are not public
+  (the author didnt mail be about those, read changelog for 0.9.5), anyway
+  if you want to add some feature for pftp you can still mail me about it
+  and i can send you the src, but i am pissed about ppl being so selfish to
+  create private patches for opensourced pftp
+- FIX : xdupe now works with color turned on in glftpd+fixed couple of color
+  related problems (ansi stripping, etc) (bug found thanx to mcr)
+- NEW : added filter for viewable characters in file viewing, viewing binary
+  files and some weird .nfos made for example secure crt really confused
+  this can be configured in .pftpconf, there are 2 methods : VIEWFILTER=0
+  will filter all characters that are not printable (<32) and all 8-bit chars
+  (use this method for ssh session with windows clients etc), VIEWFILTER=1  
+  will only filter not printable chars (works nice on console)
+  
+II@0.9.7 HoE EDiTiON:
+---------------------------
+- NEW : (by Xinu) added passive mode to pftp, it is activated by default but
+  can be turned off in .pftpconf by setting PASSIVE=0
+  PASV mode is for file lists/uploads/downloads when you are behind a firewall
+  or NAT
+- CHANGE : (by whoey) files are now explicitly opened in binary mode, should
+  fix some problems with the cygwin build
+- NEW : by pressing 'shift-f' you can cycle back in dirlist formats
+- NEW : in TLS mode sites that are connected in encrypted mode will show
+   be labeled with *name
+- NEW : 'h' is now a shortcut to "site undupe" and 'shift-h' to "site wipe -r"
+- FIX : 'k' finally works in fxp, it trasfers files as file.ok.zip, and it is
+   ignoring directories
+- CHANGE : sorting is now case-insensitive
+- CHANGE : (by ilasz) dirsizes are in human readable form now :)
+   plz note that it depends on ftpd settings too, some ftpd show dirsizes
+   in bytes, some in megabytes... so dont be confused if something goes wrong
+   for servers set to show sizes in megabytes and bytes it should work ok
+   for those that show size in kbytes it can get confusing with huge dirs
+   like 1gb or bigger i think (i may add per site setting to pftp later)
+- FIX : fixed fancy bug in kb/s report after fxp at midnight 
+- NEW : fxp engine will now use absolute paths, so it will corretly follow
+   symlinks back to the start, however your symlinks recurse pftp will end up
+   in neverending loop
+- NEW : shift-x sends the site command to all sites now
+- NEW : you can now switch to window with no site or connecting site
+- FIX : some fixes in fxp routines, but the main cleanup is still coming 
+
+II@0.9.6 HoE EDiTiON:
+---------------------------
+- NEW : (by raana) added shortcut for nuke - j and unnuke - J (shift-j)
+- CHANGE : the username and password field in ftp preferences is now longer
+  so now it is possible to use proxy servers that use username or password
+  for connection info
+- NEW : the filelist formats has been changed, there are 4 now
+   1. filename and size (if size of dir is supported by ftpd its showed)
+   2. filename only
+   3. filename, mode and date
+   4. filename, user and group
+ you can change them by pressing f in filelist
+       
+II@0.9.5 HoE EDiTiON:
+---------------------------
+- INFO : i had some free time today, so here is what i did this afternoon,
+  enjoy... btw if anyone adds any feature or fix to pftp code he HAS TO 
+  mail me the patch... if i find out that someone is using some modified
+  pftp based on what i did, ill never release new version ! i think its
+  really selfish from the coder...
+- FIX : some cygwin port fixes (there isnt full pthreads support in cygwin)
+- FIX : segfault if there was file longer then 100mb in filelist
+- FIX/CHANGE : pftp now correctly binds to the device specified in config
+  so you can use virtual devices etc... (DEVICE=eth0:1) (hey wardener :))
+- FIX : fixed segf when doing pgdn while connecting to site and some more
+  opensite related problems are fixed
+- NEW : when fxping whole directories pftp automatically compare directories
+  to skip dupes and 0-byte files
+    
+II@0.9.4 HoE EDiTiON:
+---------------------------
+- CHANGE : page-down jumping in filelist a bit changed
+- FIX : small fix in switch servers
+- NEW : compiles on FBSD4, and with tweaking on CYGWIN
+
+II@0.9.3 HoE EDiTiON:
+---------------------------
+- FIX : another bug in sorting fixed, now the files from last year will be
+ no more before new files when sorting by time
+
+II@0.9.2 HoE EDiTiON:
+---------------------------
+- FIX : a nice Y2K bug was removed in the sortfilelist function :)
+
+II@0.9.1 HoE EDiTiON:
+---------------------------
+- FIX : had to remove cursor jumping, it was caused black screen for some
+ people...
+- NEW : in filelist window you can now fast-switch servers with 1-9 keys
+
+II@0.9.0 HoE EDiTiON:
+---------------------------
+- NEW : i made a handler for terminal size changes, it should not crash now
+       (but if you make the window too small it will crash anyway)
+- CHANGE : bookmark file changes, auto convert of old bookmarks...
+ (just started changing the code, will be finsihed in next version
+  i am going to add bouncers support, dirlist type per site, ssl option
+  per site, maybe something else needed ? mail me)
+- CHANGE : i made the cursor to jump on proper possition in dialog window
+ (note : removed in 0.9.1, was causing problems)
+- FIX : bookmark jumping fixed
+- FIX : cleanup in the fxp routines, should be more stable
+- FIX : some changes in the stealth mode, however i do not recommend to use it,
+  coz it may still not work with some ftpds, and it is obsolete anyway...
+  however this is the only way to use pftp for those who are behind firewalls
+  until i make pftp support PASV listing !!! so if you need PASV dirlist just
+  try stealth first, it may work perfectly for you (tested with glftpd)  
+- FIX : fixed pthreads problem which caused pftp not work with systems
+  with glibc 2.2.x (like rh7)
+    
+II@0.8@9 HoE EDiTiON:
+---------------------------
+- NEW : experimental SSL support for GLFTPD (not in public yet :))
+ this is very experimental and also has no bookmark settings yet...
+ you will only get it if you compile pftp using Makefile.tls...
+ and you need openssl installed to compile it
+- FIX : fixed segfault when pftp crashed in case one of servers in FXP
+ timeouted
+
+II@0.8@8 HoE EDiTiON:
+---------------------------
+- CHANGE : small keyhandler change, CTRL-Z is now ignored and also it allows
+ me to handle CTRL-key pressing
+- FIX : hopefully fixed the 'SEG AT GETFILELISTENTRY' crash when starting pftp
+ (caused by pressing ENTER on welcome screen too much and fast :))
+- NEW : 'CTRL-char' will move you to first entry starting with the char, if
+ such entry doesnt exist it will jump to nearest entry with lower value, if
+ you are already on entry starting with this char you will be moved to next,
+ this works in bookmarks and in filelist windows (it may not work with
+ few chars like CTRL-M or CTRL-H coz these are reserved, CTRL-M=ENTER and
+ CTRL-H=BACKSPACE, but it still may work with some terminal settings)
+ 
+II@0.8@7 HoE EDiTiON:
+---------------------------
+- FIX : fixed ftp4all issue with usernames longer than 8 chars
+- FIX : some small display fixes related to FXP time displaying
+- NEW : when switching to window that is in FXP mode then then in other window
+ you automatically get the related FXP server
+- NEW : when you kill a window in FXP mode the second server is killed too
+- NEW : switch window position is automatically set to your current server
+ 
+II@0.8@6 HoE EDiTiON:
+---------------------------
+- CHANGE : compare now does not mark 0-byte long files... but this does not
+   mean that the 0-byte files are always skipped ! only in filelist compare 
+- CHANGE : position for new window is now suggested as opposite from current
+   window
+- FIX : another anounce fix in fxp, this time dupe anounce
+- CHANGE : finally i decided to fix the keyboard handler to some final
+   state, now it should work very fine for most ppl, if you have some problem
+   with it try this : 1. try playing with your TERM setting, something like
+   vt220,vt300,linux or maybe vt120 should work fine, and also dont forget
+   to set it in your client (in CRT or Secure CRT software i use CUSTOM
+   setting and vt220-linux.key) and 2. try turning on NUMLOCK and the numeric
+   pgup/down should work fine for you
+- FIX : if u deleted a site the bookmarks were not saved by default.. fixed
+- FIX : better fix for RETR fail problem in fxp... (last fix didnt fix the
+   problem if last file could not be retrieved)
+- NEW : there is no need to quit pftp to save bookmarks now, after closing
+   bookmark window or preferences window bookmarks should be saved
+- NEW : switch window now shows fxp transfers
+- NEW : during fxp transfers you can now see the time on the top of window   
+
+II@0.8@5 HoE EDiTiON:
+---------------------------
+- FIX : status line anounce after file upload in fxp is now fixed, it was
+   showing site label of source site...
+- CHANGE : again i rewrote some keyhandling so you can now use PGUP,PGDN and
+   INS,DEL keys even with vt100 in screen :) its done using numbers as
+   characters so you can do PGUP also by pressing "9" 
+   
+II@0.8@4 HoE EDiTiON:
+---------------------------
+- CHANGE : in case compare didnt find any file cursor is not moved to first
+    entry in the filelist anymore..., in case anything is found, it is moved
+    to first marked entry
+- FIX : fixed fxp routine to stop consuming so much cpu time during transfer...
+    sorry about this :)
+    
+II@0.8@3 HoE EDiTiON:
+---------------------------
+- CHANGE : keyhandler is now rewritten to handle escape keyboard sequences
+   that ncurses does not handle, this makes user to be able to use PGUP and
+   PGDN with crappy terminals, but from now on you have to press ESC always
+   2x to make it work.
+
+II@0.8@2 HoE EDiTiON:
+---------------------------
+- FIX :fixed bug in fxp routine causing transfer to hang if RETR failed
+
+II@0.8@1 HoE EDiTiON:
+---------------------------
+- FIX : pftp crashed during transfer with auto-noop or auto-refresh on...FIXED
+
+II@0.8@0 HoE EDiTiON:
+---------------------------
+- FIX : files "aaa.rar" and "aaa.rar-missing" are no more considered as same
+  in filelist comparing (length is now compared too)
+- NEW : whoa, finally u can check why u didnt log in, after each logout from
+  server the log is now copied to localhost log, so you can view it by
+  pressing l in localhost window...
+- NEW : ctrl-u now deletes whole line in dialog input window (works at least
+  on console, i didnt test it on other terminals yet) 
+- CHANGE : changed version numbering so we can get to v1.0 a bit faster :)
+- CHANGE : changed the gay packaging style-files are in dir
+- NEW : added key shortcuts to bookmark window
+- CHANGE : changed Makefile, do "make static" to create static binary
+- FIX : if you view a file from remote ftp it will be deleted now after you
+  close the view window...
+- NEW : added setting in config file - LOCALDIR, pftp changes local filesystem
+  dir to the specified dir at the start (feel free to comment it out if u dont
+  need it
+- FIX : you cannot transfer ".." anymore...
+- NEW : fxp engine has been rewriten, it should be more stable then before,
+  fxping dirs does not cause segfaults anymore, speed does not mess anymore,
+  but there still may be some buggs i have made :) ill do some real testings
+  and fix it in next version
+  (now pftp in fxp mode works like flashfxp, with one queue for each 2 servers,
+  so u will be able to edit/flush/stop the queue, after i make an editor :))
+  (btw killing a source server will result in dead destination server, coz
+  its in slave mode (urgent mode), u will need to kill it too)
+- WARNING : NEVER USE FXP FOR DIRS WITH LINKS !!!!!!!!
+  pftp will follow the link and will create nice recursive mirror...
+  (a link to /archive/ will make a nice mess with your credits :))
+    
+II@0.7.3.2@0 HoE EDiTiON:
+---------------------------
+- small fix in closing notice dialog if the password to run pftp was bad
+- one really stupid bug in SortFilelist() fixed, no more crashing and
+  missing files hopefully
+- changed makefiles to use g++ (no idea why there was gcc until now)
+  
+II@0.7.3.1@0 HoE EDiTiON:
+---------------------------
+- hm the feature of moving cursor to upper left corner had to be disabled :(
+  refresh() is causing black screen if anyone knows how to do this plz let
+  me know
+
+II@0.7.3@0 HoE EDiTiON:
+---------------------------
+- if cursor is not hidden it is now moved to upper corner
+- i have finally figured out that ncurses support panels, so the screen
+  problems should now be fixored
+- bugfixed filter function (fixed by sadman)
+- new filter defaults are : "*nuked* .*" ,"*.nfo *.diz" is removed
+  (you can add them to your site preferences)
+- you can now kill any window from the switch window (press c in switch window,
+  to get switch window press s), using this you can kill also windows that are
+  lagged or busy
+  
+II@0.7.2.3@0 HoE EDiTiON:
+---------------------------
+- cursor is now hidden (if possible)
+- fixed some more ncurses problems
+  (the old pftp had the cursor in upper corner, i am not able to do it with
+  newer ncurses...)
+
+II@0.7.2.2@0 HoE EDiTiON:
+---------------------------
+- fixed bug with excluding while fxping dir
+- fixed some ncurses problems
+ (prolly not all of them, someone should really look why redrawwin does
+  not work, coz i have no idea)
+
+II@0.7.2.1@0 HoE EDiTiON:
+---------------------------
+- now works with glibc
+- some small cosmetic changes
+- FXP now works with dirs (FULL RECURSIVE !!!)
+- fxp is set as default now
+- sfv is first after directories (modified SortFileList())
+ (this may change too coz its ugly)
+- changed the way of excluding files during compare
+ (now uses sites preferences)
+- excluding preferences are changed to work with new syntax
+ (these are default : "*nuked* *.diz *.nfo")
+- please report problems and bugs to hoe@dle.sk
+  
+II@0.7.2@0 TSUNAMi EDiTiON:
+---------------------------
+- fixed a damn bug in FXP mode. if some file couldn't be upped or retrieved,
+  pftp screwed up your whole upload. I knew I should have never put FXP
+  in pftp, but oh well...
+  thankx to MR_Y for telling me about it :)
+
+II@0.7.1@0 TSUNAMi EDiTiON:
+---------------------------
+- sped up vital parts of pftp. while you had max. speeds of around 300kb/s
+  in older versions of pftp, you now get up to 3mb/s. everything else
+  dealing with TCP has a nice speed up too, eg. the process of logging in
+  (thanks to zenke/EPT for pointing that out to me)
+- pftp is, by the way, Y2K compliant :P
+
+II@0.7.0@0:
+-----------
+- added FXP mode (files only, no whole dirs... who needs that anyways)
+  (read README how to get into FXP mode)
+
+II@0.6.2@0:
+-----------
+- removed timelock for all you lamerz out there
+
+II@0.6.1@1:
+-----------
+- fixed segfault with some rftpd versions which reported no user + group
+
+II@0.6.0@1:
+-----------
+- was a long time now, we finally got a FINAL version
+- fixed MANY bugs, improved compatibility to many commond daemons,
+  e.g. the 'hang' with some soft-links, some unpredictable segfaults
+  and so on
+- dont use this tool on sites which already banned it explicitely.
+
+
+II@0.5.6@4:
+-----------
+- fixed a bug with stealth-mode and very large directory contents
+  (stealth mode told you that a 'critical error' happened)
+
+II@0.5.6@3:
+-----------
+- stealth mode added, tries to hide you from script hunters
+  (read the .pftconf for more info)
+
+
+II@0.5.5@1:
+-----------
+- fixed stalling bugs
+- fixed bugs which occured sometimes after a timeout on data connection,
+  where pftp was unable to re-gain control of the site
+
+
+II@0.5.4@2:
+-----------
+- fixed minor bugs
+- stalling bug seems to be fixed
+- added undo-last-prepare function
+- added RNDREFR
+- fixed core dump on some dir-names, weirdo bug
+
+
+II@0.5.3@1:
+-----------
+- fixed countless bugs
+- util/game switch is now chained too if in FTP+ mode
+- you must specify a separate dir for the .okay and .error files now (configfile)
+
+
+II@0.5.0@1:
+-----------
+- fixed memory leak
+- fixed speeding information when in log or somewhere else
+- fixed support for gftpd (does not report any unix-group in filelist)
+- changed behaviour in chained-mode: it caches what you do (be aware!),
+  so you can start action while site is busy
+- when you leech a file which you already leeched before, it's associated
+  .okay (or .error) file will be wiped first [screwed uploads]
+- changed command to obtain a filelist from a remote server, it now shows
+  hidden files too
+- speeding information is now updated if it diffs 10% to the snapshot
+  before, or within 2 seconds
+- remove auto-jump-to-next-field in preferences
+- added quick 'O'KAY and 'C'ANCEL in preferences
+- fixed cut-off in view-file
+- added support for ANSI colors (strips them off)
+
+
+II@0.5.0@0:	[beta I]
+-----------
+- read the README carefully. I rewrote all parts so you will find valuable
+  information even if you are used to it. pftp II had changed in many ways,
+  so take a look at it.
