@@ -403,7 +403,7 @@ void CTCP::ObtainLog(char *log_out[LOG_LINES])
 
     for (n = 0; n < LOG_LINES; n++) {
         if (this->log[n]) {
-            log_out[n] = new(char[strlen(this->log[n]) + 1]);
+            log_out[n] = new char[strlen(this->log[n]) + 1];
             strcpy(log_out[n], this->log[n]);
         } else
             log_out[n] = NULL;
@@ -431,7 +431,7 @@ void CTCP::AddLogLine(char *line)
         this->log[n] = this->log[n - 1];
 
 // add line
-    this->log[0] = new(char[strlen(line) + 1 + 6]);
+    this->log[0] = new char[strlen(line) + 1 + 6];
     ptr = (struct tm *) localtime(&timenow);
     strftime(this->log[0], 7, "%H:%M ", ptr);
 
@@ -534,7 +534,7 @@ void CTCP::UpdateStack()
         if (this->in_xdupe) {
             if (!strncmp(start, "553- X-DUPE: ", 13)) {
                 xtmp = new(XDUPELIST);
-                xtmp->name = new(char[strlen(start) - 13 + 1]);
+                xtmp->name = new char[strlen(start) - 13 + 1];
                 strcpy(xtmp->name, start + 13);
                 xtmp->next = this->xdupehead;
                 this->xdupehead = xtmp;
@@ -1165,7 +1165,7 @@ bool CTCP::ReadFile(char *name, long size_min)
     this->size = 0;
 
     if ((outfile_fd =
-         open(name, O_CREAT | O_TRUNC | O_RDWR | O_BINARY)) == -1) {
+         open(name, O_CREAT | O_TRUNC | O_RDWR | O_BINARY, S_IRUSR | S_IWUSR)) == -1) {
         this->error = E_BAD_LOCALFILE;
         return (FALSE);
     }

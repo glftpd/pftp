@@ -22,7 +22,7 @@ void
  CDisplayHandler::SaveBookmarks()
 {
     FILE *file_out;
-    char *line = new(char[2048]), *enc = new(char[4096]);
+    char *line = new char[2048], *enc = new char[4096];
     BOOKMARK *bm_temp = global_bookmark;
     char tempcwd[SERVER_WORKINGDIR_SIZE];
 
@@ -305,7 +305,7 @@ void CDisplayHandler::Encrypt(char *in, char *out)
 bool CDisplayHandler::ReadBookmarks(void)
 {
     FILE *file_in;
-    char *line = new(char[4096]), *out = new(char[2048]);
+    char *line = new char[4096], *out = new char[2048];
     BOOKMARK *bm_new, *bm_temp = NULL;
     char tempcwd[SERVER_WORKINGDIR_SIZE];
 
@@ -335,62 +335,62 @@ bool CDisplayHandler::ReadBookmarks(void)
 
                 fgets(line, 4095, file_in);
                 if (!feof(file_in)) {
-                    bm_new = new(BOOKMARK);
+                    bm_new = new BOOKMARK;
                     bm_new->next = NULL;
 
                     Decrypt(line, out);
-                    bm_new->label = new(char[strlen(out) + 1]);
+                    bm_new->label = new char[strlen(out) + 1];
                     strcpy(bm_new->label, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->host = new(char[strlen(out) + 1]);
+                    bm_new->host = new char[strlen(out) + 1];
                     strcpy(bm_new->host, out);
 //debuglog("host load %s", bm_new->host);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->user = new(char[strlen(out) + 1]);
+                    bm_new->user = new char[strlen(out) + 1];
                     strcpy(bm_new->user, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->pass = new(char[strlen(out) + 1]);
+                    bm_new->pass = new char[strlen(out) + 1];
                     strcpy(bm_new->pass, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->startdir = new(char[strlen(out) + 1]);
+                    bm_new->startdir = new char[strlen(out) + 1];
                     strcpy(bm_new->startdir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->exclude = new(char[strlen(out) + 1]);
+                    bm_new->exclude = new char[strlen(out) + 1];
                     strcpy(bm_new->exclude, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->util_dir = new(char[strlen(out) + 1]);
+                    bm_new->util_dir = new char[strlen(out) + 1];
                     strcpy(bm_new->util_dir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->game_dir = new(char[strlen(out) + 1]);
+                    bm_new->game_dir = new char[strlen(out) + 1];
                     strcpy(bm_new->game_dir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_who = new(char[strlen(out) + 1]);
+                    bm_new->site_who = new char[strlen(out) + 1];
                     strcpy(bm_new->site_who, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_user = new(char[strlen(out) + 1]);
+                    bm_new->site_user = new char[strlen(out) + 1];
                     strcpy(bm_new->site_user, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_wkup = new(char[strlen(out) + 1]);
+                    bm_new->site_wkup = new char[strlen(out) + 1];
                     strcpy(bm_new->site_wkup, out);
 
                     fgets(line, 4095, file_in);
@@ -461,10 +461,10 @@ bool CDisplayHandler::ReadBookmarks(void)
                     bm_new->use_rndrefr = TRUE;
                     bm_new->retry_counter = 1;
                     bm_new->retry_delay = 60;
-                    bm_new->noop_cmd = new(char[strlen("NOOP") + 1]);
+                    bm_new->noop_cmd = new char[strlen("NOOP") + 1];
                     strcpy(bm_new->noop_cmd, "NOOP");
                     bm_new->first_cmd =
-                        new(char[strlen("SITE IDLE 300") + 1]);
+                        new char[strlen("SITE IDLE 300") + 1];
                     strcpy(bm_new->first_cmd, "SITE IDLE 300");
 
                     bm_magic_max++;
@@ -497,62 +497,62 @@ bool CDisplayHandler::ReadBookmarks(void)
 
                 fgets(line, 4095, file_in);
                 if (!feof(file_in)) {
-                    bm_new = new(BOOKMARK);
+                    bm_new = new BOOKMARK;
                     bm_new->next = NULL;
 
                     Decrypt(line, out);
-                    bm_new->label = new(char[strlen(out) + 1]);
+                    bm_new->label = new char[strlen(out) + 1];
                     strcpy(bm_new->label, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->host = new(char[strlen(out) + 1]);
+                    bm_new->host = new char[strlen(out) + 1];
                     strcpy(bm_new->host, out);
 //debuglog("host load %s", bm_new->host);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->user = new(char[strlen(out) + 1]);
+                    bm_new->user = new char[strlen(out) + 1];
                     strcpy(bm_new->user, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->pass = new(char[strlen(out) + 1]);
+                    bm_new->pass = new char[strlen(out) + 1];
                     strcpy(bm_new->pass, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->startdir = new(char[strlen(out) + 1]);
+                    bm_new->startdir = new char[strlen(out) + 1];
                     strcpy(bm_new->startdir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->exclude = new(char[strlen(out) + 1]);
+                    bm_new->exclude = new char[strlen(out) + 1];
                     strcpy(bm_new->exclude, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->util_dir = new(char[strlen(out) + 1]);
+                    bm_new->util_dir = new char[strlen(out) + 1];
                     strcpy(bm_new->util_dir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->game_dir = new(char[strlen(out) + 1]);
+                    bm_new->game_dir = new char[strlen(out) + 1];
                     strcpy(bm_new->game_dir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_who = new(char[strlen(out) + 1]);
+                    bm_new->site_who = new char[strlen(out) + 1];
                     strcpy(bm_new->site_who, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_user = new(char[strlen(out) + 1]);
+                    bm_new->site_user = new char[strlen(out) + 1];
                     strcpy(bm_new->site_user, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_wkup = new(char[strlen(out) + 1]);
+                    bm_new->site_wkup = new char[strlen(out) + 1];
                     strcpy(bm_new->site_wkup, out);
 
                     fgets(line, 4095, file_in);
@@ -641,10 +641,10 @@ bool CDisplayHandler::ReadBookmarks(void)
                     bm_new->use_rndrefr = TRUE;
                     bm_new->retry_counter = 1;
                     bm_new->retry_delay = 60;
-                    bm_new->noop_cmd = new(char[strlen("NOOP") + 1]);
+                    bm_new->noop_cmd = new char[strlen("NOOP") + 1];
                     strcpy(bm_new->noop_cmd, "NOOP");
                     bm_new->first_cmd =
-                        new(char[strlen("SITE IDLE 300") + 1]);
+                        new char[strlen("SITE IDLE 300") + 1];
                     strcpy(bm_new->first_cmd, "SITE IDLE 300");
 
                     bm_magic_max++;
@@ -677,72 +677,72 @@ bool CDisplayHandler::ReadBookmarks(void)
 
                 fgets(line, 4095, file_in);
                 if (!feof(file_in)) {
-                    bm_new = new(BOOKMARK);
+                    bm_new = new BOOKMARK;
                     bm_new->next = NULL;
 
                     Decrypt(line, out);
-                    bm_new->label = new(char[strlen(out) + 1]);
+                    bm_new->label = new char[strlen(out) + 1];
                     strcpy(bm_new->label, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->host = new(char[strlen(out) + 1]);
+                    bm_new->host = new char[strlen(out) + 1];
                     strcpy(bm_new->host, out);
 //debuglog("host load %s", bm_new->host);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->user = new(char[strlen(out) + 1]);
+                    bm_new->user = new char[strlen(out) + 1];
                     strcpy(bm_new->user, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->pass = new(char[strlen(out) + 1]);
+                    bm_new->pass = new char[strlen(out) + 1];
                     strcpy(bm_new->pass, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->startdir = new(char[strlen(out) + 1]);
+                    bm_new->startdir = new char[strlen(out) + 1];
                     strcpy(bm_new->startdir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->exclude = new(char[strlen(out) + 1]);
+                    bm_new->exclude = new char[strlen(out) + 1];
                     strcpy(bm_new->exclude, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->util_dir = new(char[strlen(out) + 1]);
+                    bm_new->util_dir = new char[strlen(out) + 1];
                     strcpy(bm_new->util_dir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->game_dir = new(char[strlen(out) + 1]);
+                    bm_new->game_dir = new char[strlen(out) + 1];
                     strcpy(bm_new->game_dir, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_who = new(char[strlen(out) + 1]);
+                    bm_new->site_who = new char[strlen(out) + 1];
                     strcpy(bm_new->site_who, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_user = new(char[strlen(out) + 1]);
+                    bm_new->site_user = new char[strlen(out) + 1];
                     strcpy(bm_new->site_user, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->site_wkup = new(char[strlen(out) + 1]);
+                    bm_new->site_wkup = new char[strlen(out) + 1];
                     strcpy(bm_new->site_wkup, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->noop_cmd = new(char[strlen(out) + 1]);
+                    bm_new->noop_cmd = new char[strlen(out) + 1];
                     strcpy(bm_new->noop_cmd, out);
 
                     fgets(line, 4095, file_in);
                     Decrypt(line, out);
-                    bm_new->first_cmd = new(char[strlen(out) + 1]);
+                    bm_new->first_cmd = new char[strlen(out) + 1];
                     strcpy(bm_new->first_cmd, out);
 
                     fgets(line, 4095, file_in);
@@ -887,7 +887,7 @@ int CDisplayHandler::ProbeBookmarkRC(void)
 
     if ((file_probe = fopen(BOOKMARK_RC, "r"))) {
 //check bookmark-id
-        line = new(char[4096]);
+        line = new char[4096];
         fgets(line, 4095, file_probe);
         fclose(file_probe);
         chdir(tempcwd);

@@ -1,7 +1,7 @@
 #ifndef	__DISPLAYHANDLER_H
 #define	__DISPLAYHANDLER_H
 
-typedef struct _SWITCH
+struct _SWITCH
 {
 	bool used;
 	int magic_left,magic_right;

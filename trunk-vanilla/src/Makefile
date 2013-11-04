@@ -1,5 +1,5 @@
 SSLDIR          = /usr
-CPPFLAGS        = -Wall -D_REENTRANT -I../include -O2 -DTLS
+CPPFLAGS        = -Wall -Wno-unused-result -Wno-write-strings -D_REENTRANT -I../include -O2 -DTLS
 LINKFLAGS       = -lpanel -lcurses -lpthread -lssl -lcrypto -DTLS -ldl
 DO              = strip pftp
 OBJS            = tlsutil.o

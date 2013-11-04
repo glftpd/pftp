@@ -2626,8 +2626,8 @@ int DoCompare(FILELIST * src, FILELIST * dest, char *excl, int oldcurs)
 
 // should we use this entry?
         if ((FilterFilename(src->name, excl))
-            && ((src->is_dir == TRUE) || (src->is_dir != TRUE)
-                && (src->size != 0))) {
+            && ((src->is_dir == TRUE) || ((src->is_dir != TRUE)
+                && (src->size != 0)))) {
 // we excluded *.diz, *.nfo, *nuke*, .message and .msg
 
             dest = dest_start;
@@ -2844,19 +2844,19 @@ void CDisplayHandler::TransferFile(bool use_ok, bool after_quit)
                     if (((found && fl_temp->is_marked)
                          || (!found && fl_temp->magic == file_magic))
                         && (strcmp(fl_temp->name, "..") != 0)) {
-                        fl_new = new(FILELIST);
+                        fl_new = new FILELIST;
                         fl_new->next = NULL;
                         fl_new->magic = fl_temp->magic;
                         if (fl_temp->is_dir) {
-                            fl_new->name = new(char
+                            fl_new->name = new char
                                                [strlen(fl_temp->name) +
-                                                strlen(dir) + 2]);
+                                                strlen(dir) + 2];
                             strcpy(fl_new->name, dir);
                             strcat(fl_new->name, "/");
                             strcat(fl_new->name, fl_temp->name);
                         } else {
                             fl_new->name =
-                                new(char[strlen(fl_temp->name) + 1]);
+                                new char[strlen(fl_temp->name) + 1];
                             strcpy(fl_new->name, fl_temp->name);
                         }
                         fl_new->is_dir = fl_temp->is_dir;
@@ -4074,9 +4074,9 @@ void CDisplayHandler::Loop(void)
                         msg = server_msg_temp->msg;
                         magic = server_msg_temp->magic;
                         if (server_msg_temp->data) {
-                            data = new(char
+                            data = new char
                                        [strlen(server_msg_temp->data) +
-                                        1]);
+                                        1];
                             strcpy(data, server_msg_temp->data);
                         } else
                             data = NULL;
@@ -4467,7 +4467,7 @@ void CDisplayHandler::PostMessage(int msg, int extended)
     pthread_mutex_lock(&(this->message_lock));
 
     msg_temp = this->message_stack;
-    msg_new = new(MSG_LIST);
+    msg_new = new MSG_LIST;
     msg_new->next = NULL;
 
     if (msg_temp) {
@@ -4492,7 +4492,7 @@ void CDisplayHandler::PostMessageFromServer(int msg, int magic, char *data)
     pthread_mutex_lock(&(this->server_message_lock));
 
     msg_temp = this->server_message_stack;
-    msg_new = new(SERVER_MSG_LIST);
+    msg_new = new SERVER_MSG_LIST;
     msg_new->next = NULL;
 
     if (msg_temp) {
@@ -4506,7 +4506,7 @@ void CDisplayHandler::PostMessageFromServer(int msg, int magic, char *data)
     msg_new->msg = msg;
     msg_new->magic = magic;
     if (data) {
-        msg_new->data = new(char[strlen(data) + 1]);
+        msg_new->data = new char[strlen(data) + 1];
         strcpy(msg_new->data, data);
     } else
         msg_new->data = NULL;
@@ -4525,9 +4525,9 @@ void CDisplayHandler::PostStatusLine(char *line, bool highlight)
 
     debuglog("POST STATUS LINE : %s", line);
     msg_temp = this->status_msg_stack;
-    msg_new = new(STATUS_MSG_LIST);
+    msg_new = new STATUS_MSG_LIST;
     msg_new->next = NULL;
-    msg_new->line = new(char[strlen(line) + 1 + 6]);
+    msg_new->line = new char[strlen(line) + 1 + 6];
     ptr = (struct tm *) localtime(&timenow);
     strftime(msg_new->line, 7, "%H:%M ", ptr);
 
@@ -4573,10 +4573,10 @@ int CDisplayHandler::FireupServer(char *label)
 
 // no check if valid !
 
-    new_sv = new(SERVERLIST);
+    new_sv = new SERVERLIST;
     new_sv->next = NULL;
 
-    new_server = new(CServer);
+    new_server = new CServer;
     new_server->SetServerType(SERVER_TYPE_REMOTE);
     new_server->SetBMMagic(bm_temp->magic);
     new_server->SetServerPrefs(bm_temp);

@@ -240,7 +240,7 @@ void CServer::HandleMessage(int msg, char *param, int magic)
     case FOR_SERVER_MSG_CWD_UP:
         if (this->param)
             delete[](this->param);
-        this->param = new(char[3]);
+        this->param = new char[3];
         strcpy(this->param, "..");
 
         if (this->server_type == SERVER_TYPE_LOCAL) {
@@ -600,35 +600,35 @@ void CServer::SetServerPrefs(BOOKMARK * bm)
     if (prefs.first_cmd)
         delete[](prefs.first_cmd);
 
-    prefs.label = new(char[strlen(bm->label) + 1]);
+    prefs.label = new char[strlen(bm->label) + 1];
     strcpy(prefs.label, bm->label);
 
     display->PostMessageFromServer(SERVER_MSG_NEWLABEL, this->magic,
                                    prefs.label);
 
-    prefs.host = new(char[strlen(bm->host) + 1]);
+    prefs.host = new char[strlen(bm->host) + 1];
     strcpy(prefs.host, bm->host);
-    prefs.user = new(char[strlen(bm->user) + 1]);
+    prefs.user = new char[strlen(bm->user) + 1];
     strcpy(prefs.user, bm->user);
-    prefs.pass = new(char[strlen(bm->pass) + 1]);
+    prefs.pass = new char[strlen(bm->pass) + 1];
     strcpy(prefs.pass, bm->pass);
-    prefs.startdir = new(char[strlen(bm->startdir) + 1]);
+    prefs.startdir = new char[strlen(bm->startdir) + 1];
     strcpy(prefs.startdir, bm->startdir);
-    prefs.exclude = new(char[strlen(bm->exclude) + 1]);
+    prefs.exclude = new char[strlen(bm->exclude) + 1];
     strcpy(prefs.exclude, bm->exclude);
-    prefs.util_dir = new(char[strlen(bm->util_dir) + 1]);
+    prefs.util_dir = new char[strlen(bm->util_dir) + 1];
     strcpy(prefs.util_dir, bm->util_dir);
-    prefs.game_dir = new(char[strlen(bm->game_dir) + 1]);
+    prefs.game_dir = new char[strlen(bm->game_dir) + 1];
     strcpy(prefs.game_dir, bm->game_dir);
-    prefs.site_who = new(char[strlen(bm->site_who) + 1]);
+    prefs.site_who = new char[strlen(bm->site_who) + 1];
     strcpy(prefs.site_who, bm->site_who);
-    prefs.site_user = new(char[strlen(bm->site_user) + 1]);
+    prefs.site_user = new char[strlen(bm->site_user) + 1];
     strcpy(prefs.site_user, bm->site_user);
-    prefs.site_wkup = new(char[strlen(bm->site_wkup) + 1]);
+    prefs.site_wkup = new char[strlen(bm->site_wkup) + 1];
     strcpy(prefs.site_wkup, bm->site_wkup);
-    prefs.noop_cmd = new(char[strlen(bm->noop_cmd) + 1]);
+    prefs.noop_cmd = new char[strlen(bm->noop_cmd) + 1];
     strcpy(prefs.noop_cmd, bm->noop_cmd);
-    prefs.first_cmd = new(char[strlen(bm->first_cmd) + 1]);
+    prefs.first_cmd = new char[strlen(bm->first_cmd) + 1];
     strcpy(prefs.first_cmd, bm->first_cmd);
 
     prefs.retry_counter = bm->retry_counter;
@@ -996,7 +996,7 @@ void CServer::Run(void)
                 magic = ac_temp->magic;
 
                 if (ac_temp->param) {
-                    this->param = new(char[strlen(ac_temp->param) + 1]);
+                    this->param = new char[strlen(ac_temp->param) + 1];
                     strcpy(this->param, ac_temp->param);
                 } else
                     this->param = NULL;
@@ -1127,7 +1127,7 @@ char *CServer::ObtainBusy(void)
     pthread_mutex_lock(&(this->busy_lock));
 
     if (this->busy) {
-        busy = new(char[strlen(this->busy) + 1]);
+        busy = new char[strlen(this->busy) + 1];
         strcpy(busy, this->busy);
     }
 
@@ -1157,11 +1157,11 @@ FILELIST *CServer::ObtainFilelist(bool * use_jump)
     fl_temp = this->actual_filelist;
 
     while (fl_temp) {
-        fl_new = new(FILELIST);
+        fl_new = new FILELIST;
         fl_new->next = NULL;
         fl_new->magic = fl_temp->magic;
         fl_new->is_marked = FALSE;
-        fl_new->name = new(char[strlen(fl_temp->name) + 1]);
+        fl_new->name = new char[strlen(fl_temp->name) + 1];
         strcpy(fl_new->name, fl_temp->name);
         strcpy(fl_new->date, fl_temp->date);
         strcpy(fl_new->owner, fl_temp->owner);
@@ -1270,7 +1270,7 @@ void CServer::PostBusy(char *busy)
     if (!busy) {
         display->PostMessageFromServer(SERVER_MSG_IDLE, this->magic, NULL);
     } else {
-        this->busy = new(char[strlen(busy) + 1]);
+        this->busy = new char[strlen(busy) + 1];
         strcpy(this->busy, busy);
         display->PostMessageFromServer(SERVER_MSG_BUSY, this->magic, busy);
     }
@@ -1536,11 +1536,11 @@ bool CServer::MakeDir(char *dir, bool try_cd, bool use_undo)
                 if (start) {
 // extract last part
                     start = start + 1;
-                    real_dir = new(char[strlen(start) + 1]);
+                    real_dir = new char[strlen(start) + 1];
                     strcpy(real_dir, start);
                 } else {
 // seems like we have no preceding path, use the full length
-                    real_dir = new(char[strlen(this->temp_string) + 1]);
+                    real_dir = new char[strlen(this->temp_string) + 1];
                     strcpy(real_dir, this->temp_string);
                 }
             } else
@@ -1548,13 +1548,13 @@ bool CServer::MakeDir(char *dir, bool try_cd, bool use_undo)
         } else
             fail = TRUE;
     } else {
-        real_dir = new(char[strlen(dir) + 1]);
+        real_dir = new char[strlen(dir) + 1];
         strcpy(real_dir, dir);
     }
 
     if (fail) {
 // our last chance, we take the original name... hmmrz
-        real_dir = new(char[strlen(dir) + 1]);
+        real_dir = new char[strlen(dir) + 1] ;
         strcpy(real_dir, dir);
     }
 
@@ -1682,12 +1682,12 @@ void CServer::LocalGetDirlist(void)
             if (strcmp(dirent->d_name, ".")
                 && strcmp(dirent->d_name, "..")) {
 
-                fl_new = new(FILELIST);
+                fl_new = new FILELIST;
                 fl_new->next = NULL;
                 fl_new->magic = magic;
                 magic++;
 
-                fl_new->name = new(char[strlen(dirent->d_name) + 1]);
+                fl_new->name = new char[strlen(dirent->d_name) + 1];
                 strcpy(fl_new->name, dirent->d_name);
 
 // now get additional information about file/dir
@@ -1722,7 +1722,7 @@ void CServer::LocalGetDirlist(void)
                     strcpy(fl_new->group, "<INVALD>");
 
                 fl_new->size = status.st_size;
-                sprintf(this->temp_string, ctime(&status.st_mtime));
+                sprintf(this->temp_string, "%s", ctime(&status.st_mtime));
 
                 invalid = FALSE;
                 end = strrchr(this->temp_string, ':');
@@ -1771,10 +1771,10 @@ void CServer::PostFromDisplay(int msg, char *param, int magic)
     pthread_mutex_lock(&(this->displaymsg_lock));
 
     msg_temp = this->display_msg_stack;
-    msg_new = new(ACTION_MSG_LIST);
+    msg_new = new ACTION_MSG_LIST;
     msg_new->next = NULL;
     msg_new->msg = msg;
-    msg_new->param = new(char[strlen(param) + 1]);
+    msg_new->param = new char[strlen(param) + 1];
     strcpy(msg_new->param, param);
     msg_new->magic = magic;
 
@@ -1797,10 +1797,10 @@ void CServer::PostUrgentFromDisplay(int msg, char *param)
     pthread_mutex_lock(&(this->displaymsg_lock));
 
     msg_temp = this->display_msg_stack;
-    msg_new = new(ACTION_MSG_LIST);
+    msg_new = new ACTION_MSG_LIST;
     msg_new->next = NULL;
     msg_new->msg = msg;
-    msg_new->param = new(char[strlen(param) + 1]);
+    msg_new->param = new char[strlen(param) + 1];
     strcpy(msg_new->param, param);
     msg_new->magic = 0;
 
@@ -2240,7 +2240,7 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic)
             filter = FilterFilename(fl_temp->name, this->prefs.exclude);
         else
             filter = FilterFilename(fl_temp->name, NULL);
-        if (filter)
+        if (filter) {
             if (fl_temp->is_dir) {
                 if (strcmp("..", fl_temp->name))
                     okay = TRUE;
@@ -2248,6 +2248,7 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic)
                 if (fl_temp->size)
                     okay = TRUE;
             }
+        }
         fl_temp = fl_temp->next;
     }
 
@@ -2315,10 +2316,10 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic)
                 if (fl_temp->is_marked) {
 		    display->PostMessageFromServer(SERVER_MSG_MARK, this->magic, fl_temp->name);    
 //add a file to our new queue
-                    ac_temp = new(ACTION_MSG_LIST);
+                    ac_temp = new ACTION_MSG_LIST;
                     ac_temp->next = NULL;
                     ac_temp->msg = FOR_SERVER_MSG_FXP_FILE_SRC;
-                    ac_temp->param = new(char[strlen(fl_temp->name) + 1]);
+                    ac_temp->param = new char[strlen(fl_temp->name) + 1];
                     strcpy(ac_temp->param, fl_temp->name);
                     ac_temp->magic = dest_magic;
                     if (ac_new == NULL) {
@@ -2345,12 +2346,12 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic)
             if (fl_temp->is_dir) {
                 if (strcmp("..", fl_temp->name)) {
 //add a dir to our new queue
-                    ac_temp = new(ACTION_MSG_LIST);
+                    ac_temp = new ACTION_MSG_LIST;
                     ac_temp->next = NULL;
                     ac_temp->msg = FOR_SERVER_MSG_FXP_DIR_SRC;
-                    ac_temp->param = new(char
+                    ac_temp->param = new char
                                          [strlen(fl_temp->name) +
-                                          strlen(ddirn) + 2]);
+                                          strlen(ddirn) + 2];
                     strcpy(ac_temp->param, ddirn);
                     strcat(ac_temp->param, "/");
                     strcat(ac_temp->param, fl_temp->name);
@@ -2386,19 +2387,19 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic)
     if (ac_new != NULL) {
         pthread_mutex_lock(&(this->displaymsg_lock));
 
-        ac_temp = new(ACTION_MSG_LIST);
+        ac_temp = new ACTION_MSG_LIST;
 //ac_temp->next = this->display_msg_stack;
         ac_temp->msg = FOR_SERVER_MSG_FXP_DIR_CWD_UP;
-        ac_temp->param = new(char[strlen(sdir) + 1]);
+        ac_temp->param = new char[strlen(sdir) + 1];
         strcpy(ac_temp->param, sdir);
         ac_temp->magic = this->magic;
         ac_temp2->next = ac_temp;
         ac_temp2 = ac_temp2->next;
 
-        ac_temp = new(ACTION_MSG_LIST);
+        ac_temp = new ACTION_MSG_LIST;
         ac_temp->next = this->display_msg_stack;
         ac_temp->msg = FOR_SERVER_MSG_FXP_DIR_CWD_UP;
-        ac_temp->param = new(char[strlen(ddir) + 1]);
+        ac_temp->param = new char[strlen(ddir) + 1];
         strcpy(ac_temp->param, ddir);
         ac_temp->magic = dest_magic;
         ac_temp2->next = ac_temp;
@@ -2495,7 +2496,7 @@ bool CServer::LeechDir(char *dir, int notice_type, bool as_ok,
             if (filter) {
                 if (this->param)
                     delete[](this->param);
-                this->param = new(char[strlen(fl_temp->name) + 1]);
+                this->param = new char[strlen(fl_temp->name) + 1];
                 strcpy(this->param, fl_temp->name);
 
                 if (!
@@ -2807,7 +2808,7 @@ bool CServer::UploadDir(char *dir, bool no_wait, bool as_ok)
             if (filter) {
                 if (this->param)
                     delete[](this->param);
-                this->param = new(char[strlen(fl_temp->name) + 1]);
+                this->param = new char[strlen(fl_temp->name) + 1];
                 strcpy(this->param, fl_temp->name);
 
                 if (!
@@ -2971,7 +2972,7 @@ void CServer::RemoveFromQueue(int msg, char *name)
 bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic)
 {
     char *buffer, *start, *end, port_msg[32], temp[256];
-    int len, dest_pid, min, sec;
+    int len, min, sec;
 //    SERVERLIST *sv_temp = global_server;
     CServer *dest;
     struct timeval before, after;
@@ -2990,7 +2991,6 @@ bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic)
    }
    if (!sv_temp)
    return (FALSE); */
-    dest_pid = destsrv->GetPID();
     dest = destsrv;
 
     this->PostBusy("HSHK");
@@ -3918,7 +3918,7 @@ void CServer::FormatFilelist(char *filename)
 
                 if (!strncmp(this->temp_string, "total", 5)) continue;
 		
-                    fl_new = new(FILELIST);
+                    fl_new = new FILELIST;
                     fl_new->next = NULL;
 
 // determine if we have all the needed fields
@@ -4001,7 +4001,7 @@ void CServer::FormatFilelist(char *filename)
    if (strrchr(name, '\n'))
    *strrchr(name, '\n') = '\0';
  */
-                            fl_new->name = new(char[strlen(name) + 1]);
+                            fl_new->name = new char[strlen(name) + 1];
                             strcpy(fl_new->name, name);
 
                             if (this->temp_string[0] == 'd')
@@ -4037,7 +4037,7 @@ void CServer::FormatFilelist(char *filename)
                             if (strrchr(name, '\n'))
                                 *strrchr(name, '\n') = '\0';
 
-                            fl_new->name = new(char[strlen(name) + 1]);
+                            fl_new->name = new char[strlen(name) + 1];
                             strcpy(fl_new->name, name);
 
                             if (this->temp_string[0] == 'l')
@@ -4071,7 +4071,7 @@ void CServer::FormatFilelist(char *filename)
                             if (strrchr(name, '\n'))
                                 *strrchr(name, '\n') = '\0';
 
-                            fl_new->name = new(char[strlen(name) + 1]);
+                            fl_new->name = new char[strlen(name) + 1];
                             strcpy(fl_new->name, name);
 
                             if (this->temp_string[0] == 'd')
@@ -4107,7 +4107,7 @@ void CServer::FormatFilelist(char *filename)
                             if (strrchr(name, '\n'))
                                 *strrchr(name, '\n') = '\0';
 
-                            fl_new->name = new(char[strlen(name) + 1]);
+                            fl_new->name = new char[strlen(name) + 1];
                             strcpy(fl_new->name, name);
 
                             if (this->temp_string[0] == 'l')
@@ -4140,7 +4140,7 @@ void CServer::FormatFilelist(char *filename)
                             if (strrchr(name, '\n'))
                                 *strrchr(name, '\n') = '\0';
 
-                            fl_new->name = new(char[strlen(name) + 1]);
+                            fl_new->name = new char[strlen(name) + 1];
                             strcpy(fl_new->name, name);
 
                             if (this->temp_string[0] == 'd')
@@ -4171,7 +4171,7 @@ void CServer::FormatFilelist(char *filename)
                             if (strrchr(name, '\n'))
                                 *strrchr(name, '\n') = '\0';
 
-                            fl_new->name = new(char[strlen(name) + 1]);
+                            fl_new->name = new char[strlen(name) + 1];
                             strcpy(fl_new->name, name);
 
                             if (this->temp_string[0] == 'l')
@@ -4235,9 +4235,9 @@ void CServer::AddEntryToCache(char *entry)
 
     if (found) {
 // add our entry
-        cl_new = new(CACHELIST);
+        cl_new = new CACHELIST;
         cl_new->next = dc_temp->cachelist;
-        cl_new->name = new(char[strlen(entry) + 1]);
+        cl_new->name = new char[strlen(entry) + 1];
         strcpy(cl_new->name, entry);
         dc_temp->cachelist = cl_new;
     }
@@ -4317,8 +4317,8 @@ void CServer::UseDirCache(void)
         delete(dc_temp);
     }
 // make our list as the new one (if we are allowed, depending on cache size)
-    dc_temp1 = new(DIRCACHE);
-    dc_temp1->dirname = new(char[strlen(this->working_dir) + 1]);
+    dc_temp1 = new DIRCACHE;
+    dc_temp1->dirname = new char[strlen(this->working_dir) + 1];
     strcpy(dc_temp1->dirname, this->working_dir);
     dc_temp1->cachelist = NULL;
     dc_temp1->next = this->dir_cache;
@@ -4326,8 +4326,8 @@ void CServer::UseDirCache(void)
     fl_temp = this->internal_filelist;
     cl_temp1 = NULL;
     while (fl_temp) {
-        cl_temp = new(CACHELIST);
-        cl_temp->name = new(char[strlen(fl_temp->name) + 1]);
+        cl_temp = new CACHELIST;
+        cl_temp->name = new char[strlen(fl_temp->name) + 1];
         strcpy(cl_temp->name, fl_temp->name);
         cl_temp->next = NULL;
 
@@ -4515,7 +4515,7 @@ int compare_time(const void *a,const void *b) {
 
 void CServer::SortFilelist(bool add_root)
 {
-    bool found, finished = FALSE;
+    bool found;
     int m, year, mon;
     time_t elapsed_time;
     struct tm file_time;
@@ -4592,9 +4592,9 @@ void CServer::SortFilelist(bool add_root)
 
 // now to the real sorting
 
-    fl_new = new(FILELIST);
+    fl_new = new FILELIST;
     fl_new->next = NULL;
-    fl_new->name = new(char[3]);
+    fl_new->name = new char[3];
     strcpy(fl_new->name, "..");
     fl_new->is_dir = TRUE;
     fl_new->size = 0;
@@ -4623,7 +4623,6 @@ void CServer::SortFilelist(bool add_root)
     }
 
 //nifty quicksort attempt :P
-    finished=FALSE;
     int i;
 
     FILELIST **dirlist;

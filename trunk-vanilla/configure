@@ -111,7 +111,7 @@ if [ $USESSL = "1" ]; then
 fi
 
 rm -f src/Makefile
-CPPF="-Wall -D_REENTRANT -I../include"
+CPPF="-Wall -Wno-unused-result -Wno-write-strings -D_REENTRANT -I../include"
 DO="strip pftp"
 BINARY="pftp"
 CPP="g++"

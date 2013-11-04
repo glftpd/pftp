@@ -437,7 +437,7 @@ void CDisplayHandler::OpenLog(CServer * server)
 
         for (n = 0; n < LOG_LINES; n++) {
             if (localwindowlog[n]) {
-                this->log[n] = new(char[strlen(localwindowlog[n]) + 1]);
+                this->log[n] = new char[strlen(localwindowlog[n]) + 1];
                 strcpy(this->log[n], localwindowlog[n]);
             } else
                 this->log[n] = NULL;
@@ -701,7 +701,7 @@ char *CDisplayHandler::GetFilelistString(FILELIST * filelist, int magic,
         n++;
     }
 
-    string = new(char[width + 1]);
+    string = new char[width + 1];
 
     if (fl_temp) {
         *is_marked = fl_temp->is_marked;
@@ -922,7 +922,7 @@ void CDisplayHandler::FetchBusy(CServer * server, WINDOW * window)
         if (busy) {
             sprintf(this->temp_string, "[%s]", busy);
             this->leftwindow_busy =
-                new(char[strlen(this->temp_string) + 1]);
+                new char[strlen(this->temp_string) + 1];
             strcpy(this->leftwindow_busy, this->temp_string);
             delete[](busy);
 
@@ -948,7 +948,7 @@ void CDisplayHandler::FetchBusy(CServer * server, WINDOW * window)
         if (busy) {
             sprintf(this->temp_string, "[%s]", busy);
             this->rightwindow_busy =
-                new(char[strlen(this->temp_string) + 1]);
+                new char[strlen(this->temp_string) + 1];
             strcpy(this->rightwindow_busy, this->temp_string);
             delete[](busy);
 
@@ -993,7 +993,7 @@ void CDisplayHandler::UpdateServerBusy(WINDOW * window, char *busy)
 // set new busy reason
         sprintf(this->temp_string, "[%s]", busy);
 
-        new_busy = new(char[strlen(this->temp_string) + 1]);
+        new_busy = new char[strlen(this->temp_string) + 1];
         strcpy(new_busy, this->temp_string);
 
         if (window == this->window_left)
@@ -1337,7 +1337,7 @@ void CDisplayHandler::UpdateFilelistPageMove(bool dir_up)
 void CDisplayHandler::UpdateFilelistPageEnd(bool dir_up)
 {
     WINDOW *window;
-    int *ypos, entries, *magic;
+    int entries, *magic;
 
     if (this->window_tab == this->window_left) {
         if (this->filelist_left == NULL)
@@ -1345,14 +1345,12 @@ void CDisplayHandler::UpdateFilelistPageEnd(bool dir_up)
         window = this->window_left;
         entries = this->filelist_left_entries;
         magic = &(this->filelist_left_magic);
-        ypos = &(this->filelist_left_ypos);
     } else {
         if (this->filelist_right == NULL)
             return;
         window = this->window_right;
         entries = this->filelist_right_entries;
         magic = &(this->filelist_right_magic);
-        ypos = &(this->filelist_right_ypos);
     }
 // determine how far we should jump
     if (!dir_up) {
@@ -1466,7 +1464,7 @@ void CDisplayHandler::UpdateFilelistNewPosition(WINDOW * window)
     FILELIST *fl_start, *fl_temp;
     char *busy, *cwd, *label, *string;
     int entries, magic;
-    int draw_ypos = 1, *ypos, pos, n, width, height =
+    int draw_ypos = 1, *ypos, n, width, height =
         this->terminal_max_y - this->status_win_size - 4;
     int format, soffset;
     bool is_left;
@@ -1551,7 +1549,7 @@ void CDisplayHandler::UpdateFilelistNewPosition(WINDOW * window)
 
 // actually draw the lines
     while ((draw_ypos <= height) && fl_temp) {
-        pos = width - strlen(fl_temp->name) - 22;
+//        pos = width - strlen(fl_temp->name) - 22;
 
 /*              if(pos >= 0) {
    filler[pos] = '\0';
@@ -1830,7 +1828,7 @@ void CDisplayHandler::AddStatusLine(char *line, bool highlight)
     int n;
 
     this->status_line = 0;
-    new_line = new(char[strlen(line) + 1]);
+    new_line = new char[strlen(line) + 1];
     strcpy(new_line, line);
 
 // move log up

@@ -233,26 +233,22 @@ bool FilterFilename(char *filename, char *filter)
 /*, fixed[] = {"*nuked* .*"} */
     char *end, *start, *pattern;
     bool pat_fault = FALSE;
-    int len, fl_len;
 
     if (filter) {
         pattern =
-            new(char[strlen(defaultfilter) + strlen(filter) + 1 + 1]);
+            new char[strlen(defaultfilter) + strlen(filter) + 1 + 1];
         sprintf(pattern, "%s %s", defaultfilter, filter);
     } else {
-        pattern = new(char[strlen(defaultfilter) + 1]);
+        pattern = new char[strlen(defaultfilter) + 1];
         strcpy(pattern, defaultfilter);
     }
 
 // ignore patterns
     start = pattern;
-    fl_len = strlen(filename);
     do {
         end = strchr(start, ' ');
         if (end)
             *end = '\0';
-
-        len = strlen(start);
 
         if (wild_match
             ((unsigned char *) start, (unsigned char *) filename))
@@ -479,7 +475,7 @@ bool ReadConfig(char *filename)
 
                 strcpy(value, start + 1);
 
-                if (*label != '\0')
+                if (*label != '\0') {
                     if (!strcasecmp(label, "DEVICE")) {
                         if (!DetermineOwnIP(value)) {
                             printf("unknown network device '%s', sorry.\n",
@@ -547,6 +543,7 @@ bool ReadConfig(char *filename)
                         fclose(in_file);
                         return (FALSE);
                     }
+                }
             }
         }
     } while (!feof(in_file));
@@ -574,11 +571,11 @@ int main(int argc, char **argv)
             if (!strcmp(argv[n], "-na"))
                 no_autologin = TRUE;
             else if (!strncmp(argv[n], "-connect=", 9)) {
-                sites2login = (char *) new(char[strlen(argv[n]) - 9 + 2]);
+                sites2login = (char *) new char[strlen(argv[n]) - 9 + 2];
                 strcpy(sites2login, argv[n] + 9);
                 strcat(sites2login, ",");
             } else if (!strncmp(argv[n], "-section=", 9)) {
-                section = (char *) new(char[strlen(argv[n]) - 9 + 1]);
+                section = (char *) new char[strlen(argv[n]) - 9 + 1];
                 strcpy(section, argv[n] + 9);
             } else {
                 printf("pftp %s EDiTiON %s\n\n", PFTP_EDITION,
