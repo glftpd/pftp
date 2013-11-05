@@ -1,0 +1,397 @@
+this document is obsolete !!!! ill write a new one... later
+(or maybe you can write one for me ? :))
+
+any bugfixes, reports or requests please mail to hoe@dle.sk
+psi has stopped working on pftp and i am now from time to time adding
+some stuff to it
+
+
+
+
+
+
+
+
+
+--FINAL-RELEASE-- pftp II@0.7.2@x (c) pSi --FINAL-RELEASE--
+
+------------------------------------------------------------------------------
+## LEGAL CRAP (just to protect myself) #######################################
+------------------------------------------------------------------------------
+I TAKE NO RESPONSIBILITY FOR THIS TOOL, WHATEVER DAMAGE IT DOES. USE AT YOUR
+OWN RISK.
+DON'T USE THIS SOFTWARE TO TRANSFER PIRATED SOFTWARE (AKA WAREZ). 
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## THE 'THANKS FOR TELLING ME THAT' SECTION ##################################
+------------------------------------------------------------------------------
+YOU SHOULD READ THIS CAREFULLY (AND MAYBE THE CHANGELOG FOR LATEST INFOS).
+THATS NO GOOD ADVICE, IT'S A MUST! THIS TOOL ISN'T AS USERFRIENDLY AND SELF-
+EXPLAINING AS IT MIGHT LOOK AT THE FIRST RUN.
+
+I TEND TO /IGNORE PEOPLE ON IRC WHICH ASK ME ABOUT THINGS WHICH ARE COVERED
+WITHIN THIS FILE.
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## OVERVIEW OF pftp FEATURES #################################################
+------------------------------------------------------------------------------
+- ftp/fxp client for unix platforms
+- compatible with xftpd, bftpd, rftpd, ftp4all, eqlftpd, warftpd
+- multithreaded design
+- unlimited simultaneous connections / actions
+- available for linux [SunOS and FreeBSD will follow for final version]
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## BEFORE YOU START ##########################################################
+------------------------------------------------------------------------------
+After unpacking the archive, you should make a directory for pftp II. Put the
+supplied binary and configfile '.pftpconf' into your dir. Then have a look
+at the configfile and edit it to your needs.
+
+- the whole file isn't very userfriendly, so please JUST use the form as
+  described. Otherwise unpredictable things may happen!
+- comments start with a "#" as the FIRST character, the whole line will be
+  ignored
+- don't make empty lines, I'm not microshit where everyone can fuck up config-
+  files without worrying
+- items have the form "ITEMNAME=VALUE". no spaces between, nothing.
+
+- rite now you can specify the following items:
+	LINUX only:
+	- DEVICE	if you are using a dialup or a machine with multiple
+			network-devices, you have to use this item or you can't
+			get pftp to work. You can determine what devices you
+			have by issuing "ifconfig".
+			ex.: "DEVICE=ppp0" or "DEVICE=eth0"
+
+	SUN-OS only:
+	- LOCALIP	some SunOS-machines seems to have problems detecting
+			their own IP. You need to specify this item in case
+			you have such a host (you can determine that if you
+			get the error "PORT command not understood").
+			It's not wrong to specify that even if your machine
+			could work without it. You can JUST use a numerical
+			IP here.
+			ex.: "LOCALIP=123.456.234.345"
+
+	all ports:
+	- OKAYDIR	a (writable) dir where the .okay and .error files for
+			transferred files are stored. Never choose a dir where
+			other users could put their stuff in too, like /tmp/ !
+			NEVER use a relative dir, ALWAYS absolute!
+			And put a '/' on the end !
+			ex.: "OKAYDIR=/home/me/pftp/okays/"
+
+	- RNDREFR	randomizes refresh rate up to +/- half of the interval
+			of each site (possible values: 0 and 1)
+
+	- STEALTH	stealth couriering. Uses a different method to obtain
+			a filelist. This one is much more reliable, faster,
+			and might help to hide you from script trackers.
+			(possible values: 0 and 1)
+
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## COMMON PROBLEMS ###########################################################
+------------------------------------------------------------------------------
+- on execution, you get an error like
+
+	Error opening terminal: xterm.
+
+	the problem is that the terminfo files in some distributions are
+	located in directories which differ from the usual ones.
+	For example if you got RedHat 5.x, they moved from /usr/lib/terminfo
+	to /usr/share/terminfo.
+	there are two ways to solve this, either make a symbolic link
+	(if you have root access to the shell) like this (replace the first
+	path with the one you have on your system):
+
+		ln -s /usr/share/terminfo /usr/lib/terminfo
+
+	the second way is easier because most time you will not have root
+	on the box (place this in your .bash_profile or any other startfile
+	of the shell you use - replace the dir with the one your system
+	uses):
+
+		export TERMINFO=/usr/share/terminfo
+
+
+- pftp quits with segmentation faults all the time.
+	this one is tricky, and up to now there's no solution because you
+	are most likely using a glibc (libc6) system, like RedHat 5.x.
+	go and install a decent distribution like RedHat4.2
+
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## PFTP BASICS ###############################################################
+------------------------------------------------------------------------------
+PFTP downloads files from the source server to your shell, and uploads to all
+other sites at once WHILE downloading.
+This mode has two 'minor' submodes: chained and unchained. In chained-FTP mode,
+all sites are kind of "chained" to each other, to "synchronize" their actual
+working-dir. Means, that if you CWD on one site, all others will follow (if
+possible). The PREPARE and TRANSFER functions are chained too, so all sites
+should be synchronized to each other.
+The unchained mode simply executes your action just on the opposite window.
+In the preferences you can give sites individually the 'chained' flag. If this
+flag is enabled, the corresponding site will be 'chained' to the others. If
+not, it simply doesn't execute things like CWD, PREPARE and TRANSFER as a
+chained site would.
+Internally every site has it's own message-stack. If you make an action in the
+chained-FTP mode, it posts a message to every other site saying they should do
+this'n'that. So don't worry if a site is slower than others, it will still be
+"synchronized" and execute all it's messages in the correct order.
+If you use chained-FTP mode, take care of the working-dir of every server since
+it's VERY easy to screw up a release this way.
+If you need to do other work on a site while in chained-FTP mode, like looking
+into different dirs and stuff, make sure you switch back to unchained mode
+because all other sites would try to CD to the same dirs and so on.
+
+(same applies to FXP mode with two exceptions: FXP can't upload one file to
+more than one site at once, due to its nature. Ofcourse you can start as many
+FXP uploads as you want at the same time. The 2nd thing is, you can't do
+whole dirs like in FTP mode. Why? Coz I'm lazy.)
+
+Generally you can do as many actions as you want at the same time. pftp is
+multithreaded and so there's no limitation. if a site is not busy (look at the
+indicators in the upper edges) then it's ready for an action.
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## COMMAND LINE PARAMETERS ###################################################
+------------------------------------------------------------------------------
+- you can omit the auto-login feature with the "-na" (no-autologin) switch.
+  ex.: "pftp -na"
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## DETAILED DESCRIPTION OF ALL COMMANDS ######################################
+------------------------------------------------------------------------------
+(If you can't see colors in pftp, try setting TERM to 'linux' or whatever
+appropriate. And while you are at it, think about using xwindows to get a
+larger view of pftp)
+
+## GENERAL KEYS:
+----------------
+
+- TAB-key
+  use TAB to switch between the two windows (left and right) to select the
+  active window which should be used for commands
+
+- RETURN-key
+  use RETURN in the site-windows to change the directory.
+  alternatively you can use CURSOR-RIGHT.
+
+- CURSOR-LEFT key
+  use CURSOR-LEFT to change back from a directory to it's parent dir
+
+- SPACE-key
+  use SPACE to select/deselect dirs and files
+
+- CURSOR-UP, CURSOR-DOWN, PAGE-UP, PAGE-DOWN
+  use these keys to navigate in all windows
+
+- ESCAPE-key
+  you can cancel a dialog with ESCAPE at any time (it might take about 1/4
+  second, because the keyboard-routine needs to wait if it is the beginning of
+  an ESCAPE-sequence for a special key, or just plain ESCAPE).
+
+- INSERT and DELETE (the ones above the cursor-keys)
+  use these to scroll in the status-window. if a new message comes up, it will
+  set you back to the end of the buffer.
+
+- '+' and '-' (NOT the ones on the numpad)
+  '+' marks all files, '-' demarks them.
+
+
+## COMMAND KEYS:
+----------------
+
+- 'O'
+  opens a new connection. the bookmark-manager will pop up so you can select
+  a site to open, add, delete or modify. Just use TAB or CURSOR-LEFT / RIGHT
+  to select the desired action with the selected site, and press RETURN.
+  If you have just one connection open, then the second one will be opened in
+  the opposite window so that at least all windows are filled. You can open as
+  many sites as you want, there's no limitation.
+  If you MODIFY or ADD a site, another dialog will pop up with the following
+  items:
+	ALIAS				choose a name for the site
+	HOSTNAME / IP			numerical IP or DNS of the site
+	USERNAME			your login name
+	PASSWORD			your password for your login
+	
+	AFTER LOGIN CWD TO		startdir to use after login
+	EXCLUDE FROM COPYING/DETECTING	filename patterns which should be
+					ignored when you transfer a whole dir
+					or when detecting new files.
+					NFO and DIZ files are ignored by
+					default, so no need to specify.
+					e.g. '.BAD .MP3'
+	AUTOREFRESH EVERY (SECS)	automatic filelist refresh rate
+	SEND NOOP EVERY (SECS)		NOOP (no-operation) command rate
+	JUMP TO NEWEST DIR/FILE		makes the cursor jump to the newest
+					dir (if available) or file after you
+					do a refresh (or CD into a dir)
+	TRACK NEW DIRS/FILES		notices you in the status-window
+					and beeps if a ne dir/file is detected.
+					It caches up to 10 last visited dirs
+					per site
+	AUTOLOGIN ON STARTUP		logs into this site whenever you start
+					pftp (omit autologin with the "-na"
+					switch on startup)
+	USE CHAINING ON THIS SITE	if you are in chained-FTP mode, this
+					site will follow all the commands
+					(it is 'chained' with the others)
+	UTIL/GAMES SITE			if the site is of type util/game, you
+					can define two dirs for fast changing
+	SITE WHO/USER/WKUP		define the commonly used SITE commands
+					(for fast access in the SITE-dialog)
+					pftp automatically appends the
+					username to the USER command.
+
+  You can modify those things by pressing RETURN, and toggle with SPACE.
+  Navigate in this dialog with TAB or the cursor-keys.
+
+- 'S'
+  switch a site into the actual window. If you have opened more than two sites
+  (and you will), you can switch sites from the background (they remain still
+  active and work like they do when you see them in a window) to front.
+  A dialog will appear where you can select the site.
+
+- 'E'
+  edit the prefs of the site in the actual window. For a description of these
+  preferences, see the bookmark-manager description.
+
+- 'T'
+  transfer files/dirs. When you hit 'T' while nothing is selected on the actual
+  site, just the dir/file under the cursor will be copied. Otherwise all marked
+  dirs and files will be transferred.
+  If you have marked more files and one can't be transferred because of a dupe,
+  then the copy-process will continue with the next file.
+  All other errors abort the process because they are mostly unrecoverable.
+  What exactly happens, depends on the mode you selected (chained, unchained).
+  (and ofcourse if you are in FXP or not. FXP doesnt do whole dirs, duh. And
+  it won't upload something from/to your local filesys, switch to FTP instead).
+
+- 'K'
+  transfer as OKAY. works like TRANSFER but uploads the file(s) in the form of
+  "filename.ok.extension" (eg. clsab01.ok.zip).
+  You can't transfer files as OKAY in chained mode, that would make no real
+  sense. OKAY doesn't work when you transfer to your local-filesys too.
+
+- 'L'
+  view the log. All ftp-commands and their response from the servers are logged
+  internally and can be viewed with this command (the log of the actual site
+  will pop up)
+
+- 'F'
+  alternate file-list. You can view additional information about entries in the
+  filelist-windows (like the user and their permissions)
+
+- 'B'
+  filelist sorting. By default, the list is sorted alphabetically. You can
+  toggle alpha/chronological sorting.
+
+- 'Y' and 'SHIFT-Y'
+  cycle through the 5 newest dirs (or if no dirs, files). If you press SHIFT-Y
+  you will jump back to the newest entry.
+
+- 'C'
+  close site. Logs you off the actual site. Works just when the site isn't busy.
+
+- 'R' and 'SHIFT-R'
+  refresh site(s). if you press 'r', a refresh of the actual site will be
+  forced. Pressing SHIFT-R refreshes all sites at once.
+
+- 'P' and 'SHIFT-P'
+  prepare dir. Preparing a directory means the dir will be created, and the
+  working dir on the source and the target (or targets in chained mode) will be
+  changed to that dir. No files will be transferred yet!
+  If you use just 'p' then the dir under the cursor will be created.
+  When using SHIFT-P then the dir where you are in will be created (like
+  you are in '/foo/buzz/bar' then you create 'bar' on the target(s))
+
+- 'I'
+  wipe last prepare. Everytime you 'p'repare a dir, you can undo this step with
+  'I' afterwards, regardless in what dir you are. It CWD's back to the dir where
+  it was, and tries to RMD the directory (which will obvisouly not be allowed if
+  you have already uploaded files). If you are actually (NOT at the time where
+  you 'p'repared the dir!) in chained mode, all sites which are chained will
+  undo their last prepare. If unchained, just the actual site will execute this.
+
+- 'Z' FTP/FXP mode selection. pro's and con's are explained at the top of this
+
+- 'z'
+  minor mode selection. switches between chained ('FTP +' / 'FXP +') and unchained
+  ('FTP' / 'FXP') mode. The difference between them is explained detailed a few
+  pages above.
+
+- 'N'
+  rename a file/dir. Tt will prompt you for the new name.
+
+- 'A'
+  compare filelists. The filelists of the two windows will be compared against
+  each other. *.nfo, *.diz .message, .msg and *NUKE* files/dirs will be ignored.
+  A ".", "-" and a "_" are equal to each other (stupid couriers tend to
+  exchange these with each other). It's case in-sensitive too.
+  Differences will be marked on each side, the cursor jumps to the first marked
+  entry.
+
+- 'D'
+  delete file/dir. Tries to delete a file or directory. no server let's you wipe
+  a directory with files/dirs in it so you will have to delete them as well if
+  want to do so.
+
+- 'M'
+  make directory. Enter the name of the dir to create in the input-dialog.
+  If the dir can be created, the working dir will be set to it.
+
+- 'U' and 'G'
+  change to util/game dir. If the site is a util/game site (depends on what you
+  have set in its preferences), you can quick-jump to those dirs. If in chained
+  mode (FTP+), pftp will switch dirs on all chained util/game sites.
+
+- 'W'
+  change working-dir. If you need to change your dir to somewhere else and it
+  would take too much time walking through all dirs, simply enter the absolute
+  path in the input-box and it will set the working dir to your input (if the
+  server permits that).
+
+- 'V'
+  view file. Use this to view a file (the one under the cursor).
+
+- 'X'
+  SITE command. Enter your command in the input-box, and it will try to execute
+  it. You can take a look on the output by viewing the log.
+  Alternatively you can use the cursor-keys to select a predefined command
+  (use the site's preferences to define those).
+
+- 'Q'
+  quit pftp. It logs you off all sites, regardless if they are idle.
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+## CREDITS'N'STUFF ###########################################################
+------------------------------------------------------------------------------
+Welp, this stuff is mental copyright by pSi_
+
+Thanx to MR_Y and ESPRiT for the webspace ;)
+
+Huge thanx goes out to raidman (not only because of his financial support),
+|WREX|, Bug_Lord, tree, Mc and macker ;)
+
+(and everyone else I forgot, don't blame me)
+------------------------------------------------------------------------------
+
+contact information:
+--------------------
+IRC:	pSi_ (US-EFNET)
+WWW:	http://wildsau.idv.uni-linz.ac.at/~m9555877
+FTP:	<none>
+EMAIL:	psi@backlash.de

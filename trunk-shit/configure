@@ -1,0 +1,158 @@
+#!/bin/sh
+ssldirs="$OPENSSLDIR /usr /usr/local/openssl /usr/lib/openssl /usr/local/ssl /usr/ssl
+         /usr/share /usr/lib /usr/lib/ssl /usr/pkg /opt /opt/ssl /usr/local"
+
+echo "pFTP configure utility by HoE..."
+
+case `uname` in
+    Linux)
+        SYS="lnx"
+        echo "Platform = Linux"
+        ;;
+    FreeBSD)
+        SYS="bsd"
+        echo "Platform = FreeBSD"
+        ;;
+    CYGWIN*)
+        SYS="cyg"
+        echo "Platform = CYGWiN"
+        ;;
+    *)
+        SYS=""
+        echo "Platform = UNKNOWN"
+        ;;
+esac
+
+DEBUG="0"
+USESSL="1"
+ac_prev=
+for ac_option
+do
+    if [ ! -z $ac_prev ]; then
+        if [ $ac_prev = "--openssldir" ]; then
+            HOPENSSLDIR=$ac_option
+            ac_prev=""
+        fi
+    else
+        if [ $ac_option = "--openssldir" ]; then
+            ac_prev=$ac_option
+            continue
+        elif [ $ac_option = "--debug" ]; then
+            DEBUG="1"
+        elif [ $ac_option = "--nossl" ]; then
+            USESSL="0"
+        elif [ $ac_option = "cyg" ]; then
+            SYS="cyg"
+            echo "user defined platform = $SYS"
+        elif [ $ac_option = "lnx" ]; then
+            SYS="lnx"
+            echo "user defined platform = $SYS"
+        elif [ $ac_option = "bsd" ]; then
+            SYS="bsd"
+            echo "user defined platform = $SYS"
+        else
+            echo "try : ./configure <--openssldir [dir]> <--debug> <--nossl> <platform>"
+            echo "supported platforms = bsd/lnx/cyg"
+            exit 1
+        fi
+    fi
+done
+
+if [ -z $SYS ]; then
+    echo "try : ./configure <--openssldir [dir]> <--debug> <--nossl> <platform>"
+    echo "supported platform = bsd/lnx/cyg"
+    exit 1
+fi
+
+makes='gmake make'
+
+for x in $makes; do
+    xx=`which $x 2>/dev/null`
+    if [ ! -z $xx ]; then
+        if [ -x $xx ]; then
+            MAKE=$x
+            break
+        fi
+    fi
+done
+
+if [ -z $MAKE ]; then
+    echo "No make software found... Install GNU make"
+    exit 1
+fi
+
+echo "Using make = $MAKE"
+
+if [ $USESSL = "1" ]; then
+   if [ -z $HOPENSSLDIR ]; then
+        for x in $ssldirs; do
+            if [ -f $x/lib/libssl.a ]; then
+                if [ -f $x/include/openssl/bio.h ]; then
+                    HOPENSSLDIR=$x
+                fi
+            fi
+        done
+    fi
+
+   if [ -z $HOPENSSLDIR ]; then
+        echo "OpenSSL not found, not using TLS method..."
+        USESSL="0"
+    else
+        USESSL="1"
+        echo "OpenSSL dir = $HOPENSSLDIR"
+   fi
+fi
+
+rm -f src/Makefile
+CPPF="-Wno-char-subscripts -W -g -Wall -D_REENTRANT  -U_FORTIFY_SOURCE -I../include"
+DO="strip pftp"
+BINARY="pftp"
+CPP="g++"
+
+if [ $SYS = "bsd" ]; then
+   LINKF="-pthread -lpanel -lncurses"
+elif [ $SYS = "cyg" ]; then
+    CPPF="$CPPF -DCYGWIN"
+    LINKF="-lpanel -lncurses -lpthreadGC"
+    DO="strip pftp.exe"
+    BINARY="pftp.exe"
+elif [ $SYS = "lnx" ]; then
+    LINKF="-lpanel -lncurses -lpthread"
+fi
+
+if [ $DEBUG = "1" ]; then
+    CPPF="$CPPF -g -DDEBUG"
+    LINKF="$LINKF -g"
+    DO=""
+else
+   CPPF="$CPPF -O2"
+fi
+
+OBJS=""
+if [ $USESSL = "1" ]; then
+    OBJS="tlsutil.o"
+    TMP='-I$(SSLDIR)/include -DTLS'
+    CPPF="$CPPF $TMP"
+    TMP='-L$(SSLDIR)/lib -lssl -lcrypto -DTLS'
+    LINKF="$LINKF $TMP"
+    if [ $SYS = "lnx" ]; then
+        TMP="-ldl"
+        LINKF="$LINKF $TMP"
+    fi
+fi
+
+echo "SSLDIR          = $HOPENSSLDIR" >>src/Makefile
+echo "CPPFLAGS        = $CPPF" >>src/Makefile
+echo "LINKFLAGS       = $LINKF" >>src/Makefile
+echo "DO              = $DO" >>src/Makefile
+echo "OBJS            = $OBJS" >>src/Makefile
+echo "BINARY          = $BINARY" >>src/Makefile
+echo "CPP             = $CPP" >>src/Makefile
+
+cat src/Makefile.in >>src/Makefile
+rm -f Makefile
+echo "MAKE=$MAKE" >Makefile
+cat Makefile.in >>Makefile
+rm -f src/*.o src/pftp pftp
+echo "Done, you can do \"$MAKE static\" or \"$MAKE dynamic\" now..."
+

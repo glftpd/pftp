@@ -1,0 +1,64 @@
+DEBUG=1
+#LOCALIP=192.168.0.1
+DEVICE=eth1
+VIEWFILTER=0
+# MODE           set to 1 for FTP mode,
+#                2 for FTP chained mode or
+#                3 for FXP mode
+MODE=3
+#####################################################################
+# FILELISTLEFTFORMAT/FILELISTRIGHTFORMAT
+#                0 = filename, size
+#                1 = filename
+#                2 = filename, attributes, date
+#                3 = filename, owner, group
+#                4 = filename, size, owner
+#
+#                defaults to 0, in case forgotten or non-valid value
+#
+#####################################################################
+FILELISTLEFTFORMAT=0
+FILELISTRIGHTFORMAT=0
+FREEOLDFILELIST=1
+DEFAULTFILTER=.* *.bad lips.nfo ti.nfo mojo.nfo coke.nfo
+FIRSTFILESFILTER=*.sfv *.nfo *.r?? *.0?? 
+FIRSTDIRSFILTER=cd*
+OKAYDIR=/home/zaarl/pftpfxp-mu/ok
+LOCALDIR=./dl
+SECTION01_LABEL=util
+SECTION02_LABEL=game
+SECTION03_LABEL=dox
+SECTION04_LABEL=vcd
+SECTION05_LABEL=svcd
+SECTION06_LABEL=divx
+SECTION07_LABEL=dvdr
+SECTION08_LABEL=tv
+SECTION09_LABEL=anime
+SECTION10_LABEL=ps2
+SECTION11_LABEL=xbox
+SECTION12_LABEL=ps2r
+SECTION13_LABEL=xboxr
+SECTION14_LABEL=psx
+SECTION15_LABEL=dc
+SECTION16_LABEL=gba
+SECTION17_LABEL=gc
+SECTION18_LABEL=book
+SECTION19_LABEL=kids
+SECTION20_LABEL=xxx
+SECTION21_LABEL=trailer
+SECTION22_LABEL=
+
+PRE01_LABEL=utils
+PRE02_LABEL=games
+PRE03_LABEL=dox
+PRE04_LABEL=vcd
+PRE05_LABEL=svcd
+PRE06_LABEL=divx
+PRE07_LABEL=dvdr
+PRE08_LABEL=anime
+PRE09_LABEL=tv
+PRE10_LABEL=xbox
+PRE11_LABEL=ps2
+PRE12_LABEL=
+
+#####################################################################

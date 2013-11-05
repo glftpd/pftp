@@ -1,0 +1,254 @@
+   ------// pftp shit edition //-----++
+   Read the entire NFO for features
+   ----------------------------------++
+
+   version v1.12
+   - Modified the Makefile so it compiles with newer compilers. Now also compiles again in Ubuntu.
+     chmod 700 configure, then run ./configure then make static or make dynamic
+
+   ++------------------------------------------------------------------------
+   version v1.11
+   - There was a bug in the dircreationchecker making pftp crash if a dir was manually created.
+     This is fixed now. Dircreationchecker will not activate when you create a dir manually.
+
+   ++------------------------------------------------------------------------
+   version v1.10
+   - Included a sampe irssi script. Based on the original pftp-mew irssi scripts. Be sure to edit the
+     autoconnect.cfg to your needs. place it in your homedir or edit the relcatch-irssi.pl to point
+     to another location.
+   - Fixed the section selection. After autoconnecting through the UDP listener; the sites you manually
+     connect to afterwards will not go to the section given by the UDP listener. They will be section-less.
+   - modified the UDP listener to listen to optional given releasenames. The irssi reflects the change.
+     To modify your mIRC script to add the releasename use this syntax: 
+     /sockudp -n pftp <ip-adress> <port> <pass> <section> <sites> <releasename>
+     NOTE: You do not have to modify your UDP sender, the releasename is optional.
+   - pftp will now check if the dir you are about to create has the exact same name as the dir you are in. 
+     If that is the case he will stop the dir creation.
+
+   ++------------------------------------------------------------------------
+   version v1.9
+   - removed an old feature which was now quite a bug. If you dont press any key for 30 seconds 
+     after starting up pftp it will bail out without a message. This was an old feature when the UDP listener wasnt
+     build in yet. 
+   - Changed the way it retrieved the host for the UDP listener. The program crashed on OpenBSD. 
+     A fix was submitted by psxc and I build that into the sourcecode. 
+   - Changed the compiler options a bit and removed the strip command in the Makefile.
+
+   ++------------------------------------------------------------------------
+   version v1.8
+   - Added a gcc 3.4+ version array syntax fix. See 
+     http://www.spuncookie.com/component/option,com_remository/Itemid,37/func,select/id,2/ for more information
+
+   ++------------------------------------------------------------------------
+   version v1.7
+   - added the pftp pret patch to enable DrFTPD trading. See http://www.drftpd.org/index.php/Pftp_pret_patch
+     for more information
+
+   ++------------------------------------------------------------------------
+   version v1.6
+   - changed the Makefile to use make instead of gmake. Debian doesnt know gmake anymore
+   - changed the default behaviour of the copyprotection to not active. you can set that in the config.h file
+   - removed the unused int i in main
+   - changed the screensize parameters so pftp doesnt start instead of bailing out when doing a modify site. Minimum size is now 30 rows and 80 cols.
+
+   ++------------------------------------------------------------------------
+   version v1.5
+   - changed the highlight thingy: transfers are now highlighted, dupes are not
+   - removed the abor command cause it fucks up sometimes, leaving me with uncloseable sites
+   - added versionnumber in startmessage
+   - fixed the skiplist issue with the E mode transfer
+
+   TODO:   
+   - Sites sometimes hang up in gui and I am unable to kill them. 
+     Mostly happens when I try to transfer from a site that has been disconnected
+   - max slots per site, so that the udp listener doesnt gangbang the sites when a pre spree happens
+   - sites that are not up (timeout on connection) dont respond to the quit thingies I build but it does
+     respond to the c in the switch site dialog. it does however respond after timeout or after slow connect.
+   - dox racing, down dox to shell and up to all sites at once
+   - grab releasename and make option to create that dir on other ftps for automated mirror over pairs. Very tricky
+   - reconfigure the Et transfer mode
+   - When using Ee it doesnt do sample correctly. (probably same issue as Et)
+   - fix the E mode when in the right site window (gave me a problem today, didnt quite work)
+
+   ++------------------------------------------------------------------------
+   version v1.4
+   - Made "FXP TRANSFER DONE" msg highlighted
+   - segmentation fault that was caused when modding 
+     a site is caused cause the screen is too small. not fixed.
+   - when transferring in repeat mode it now shows => instead of ->. thats for the peeps
+     that are colorblind.
+
+   TODO:
+   
+   - skiplist doesnt work properly when using E (first time goes correct). 
+   - fix the ABOR command decently, or remove it.
+   - max slots per site, so that the udp listener doesnt gangbang the sites when a pre spree happens
+   - sites that are not up (timeout on connection) dont respond to the quit thingies I build but it does
+     respond to the c in the switch site dialog, fix that
+   - dox racing, down dox to shell and up to all sites at once
+   - grab releasename and make option to create that dir on other ftps for automated mirror over pairs
+   - reconfigure the Et transfer mode
+   - When using Ee it doesnt do sample correctly. 
+   - fix the E mode when in the right site window (gave me a problem today, didnt quite work)
+
+   ++------------------------------------------------------------------------
+   version v1.3
+   - added a function/keybind that automaticly disconnects sites that autoconnected through UDP
+     but u dont want to trade that release. add "FUNCTION_IDLESITE_QUIT=q" to ur keymap file (.pftp/keymap)
+     for example to have the key q bound to it.  
+   - probably removed error: pftp: tcp.cc:442: void CTCP::PrepareXDupe(): Assertion `this->in_xdupe == 0' failed.
+     15:10:30 [          ] rejected 'alli-lotr.ro~vid.cd2.r13' ( by zipscript - FXP faile)ftp: tcp.cc:442:
+     void CTCP::PrepareXDupe(): Assertion `this->in_xdupe == 0' failed.::  -- ]     
+     happened cause one site doesnt support xdupe. giving m failures when disk is full or transfer abort or something.             
+   - when a site disconnects dont disconnect the other one in the pair, only now the control session stays open 
+     and now dissapears when u do a dir up or something. so its partially fixed. refresh of the dir does the trick
+
+
+   TODO:
+   
+   - fix the random segmentation faults (including modding a site during race that it quits pftp)
+   - max slots per site, so that the udp listener doesnt gangbang the sites when a pre spree happens
+   - sites that are not up (timeout on connection) dont respond to the quit thingies I build but it does
+     respond to the c in the switch site dialog, fix that
+   - dox racing, down dox to shell and up to all sites at once
+   - grab releasename and make option to create that dir on other ftps for automated mirror over pairs
+   - reconfigure the Et transfer mode
+   - fix the E mode when in the right site window (gave me a problem today, didnt quite work)
+
+   ++------------------------------------------------------------------------
+   version v1.2
+   
+   - fixed that sites automaticly go to free quickpairs when UDP listener kicks in
+   - when max idle time kicks in after udp connect it now only disconnects the new sites
+     instead of closing whole pftp, so if ur in the toilet during a dvdr race and a tv race pops up
+     u wont miss 90% of that dvdr :-)
+   - now when racing in E mode it shows in red in the pairs in the bottom of the screen
+   
+   TODO:
+   
+   - reconfigure the Et transfer mode
+   - fix the E mode when in the right site window (gave me a problem today)
+   - remove error: pftp: tcp.cc:442: void CTCP::PrepareXDupe(): Assertion `this->in_xdupe == 0' failed.
+   - dox racing, down dox to shell and up to all sites at once
+   - grab releasename and make option to create that dir on other ftps for automated mirror over pairs
+
+   ++------------------------------------------------------------------------
+
+   version v1.1
+   
+   - updated the number of pairs from 14 to 19
+   - UDP listener for connects to sites and sections. in case u are in a tv race
+     u wouldnt wanna miss a dvdr race for that. port and ip configuration in defines.h
+     to send a message from mirc use /sockudp -n pftp <ip-adress> <port> <pass> <section> <sites>
+   - userinfo checking in case of theft of the program. so program will not run in other context.
+     No use of this feature if u leave the source on the shell btw :-)
+
+   
+   TODO:
+   - add sites automaticly to quickpairs when UDP listener kicks in
+   - reconfigure the Et transfer mode
+   - remove error: pftp: tcp.cc:442: void CTCP::PrepareXDupe(): Assertion `this->in_xdupe == 0' failed.
+   - dox racing, down dox to shell and up to all sites at once
+   - grab releasename and make option to create that dir on other ftps for automated mirror over pairs
+
+   ++------------------------------------------------------------------------
+
+   used the leaked release from TFC to mod it. 
+
+   version v1.0
+   
+   - fixed the "not in correct dir" by removing the trailing / in the dirnames (most ioftpd sites)
+   
+   TODO:
+   - UDP listener for connects to sites and sections. Needs a seperate thread for that
+   - dox racing, down dox to shell and up to all sites at once
+   - grab releasename and make option to create that dir on other ftps for automated mirror over pairs
+
+   ++------------------------------------------------------------------------
+  
+   version v0.24
+   
+   + added a feature to make pftp auto quit if no key was pressed withing a 
+     definable time persion (see config.h), so now you can forget your autologin
+     on ;p
+ 
+   ------------------------------------------------------------------------++
+
+   new in v0.23
+   
+   + merged with pftpfxp-mew v0.11.4mew6
+ 
+   - rewrote some of my code and some of pftpfcp-mew's code..
+  
+   - some gui layout changes.
+   
+   - a few changes / additions to config.h check it for details.
+
+   + rewrote the magic trade function so it can trade whole directorys, just
+     press 'Et' on a dir and you'll see. though be very carefull with this
+     since it will transfer files in the dir you started when its done with
+     the subdirs of the dir you transfered.. confused? dont use it :>
+
+   + added automatic conversion of older bookmarks format, though if you have
+     bookmarks from v0.2 you need to do the following: 
+     open .pftp/bookmarks, if the first line says: II@0.11.2mew5 change it to
+     II@0.11.2mew5+. dont tho this if its the offical versions bookmarks tho.
+
+   + added a pre function with support for 12 target sections. sections are
+     configured in .pftp/config.
+     
+     version 0.2 based on pftpfxp-mew v0.11.4mew5e
+
+    ---------------------------++
+
+    new in v0.2
+
+    - fixed a minor 'bug' with the extra switch pairs added in v0.1, now
+      the extended ones are used then connecting at startup,
+      ie with -connect=.....
+
+    + added a repeated refresh-compare-transfer function
+      (FUNCTION_MAGICTRADE_REPEAT=E in .pftp/keymap). when toggled, each
+      time a transfer is done on a site pair it will refresh compare and
+      transfer. if no new files are found it will wait for a definable
+      time (see config.h) and then refresh again. if it doesn't get any
+      new files after x retries (see config.h for number for retries) it
+      will toggle the option off. this function might still be seriously
+      buggy and not tested as much as it should be so
+      USE IT AT YOUR OWN RISK =).
+      
+      when implementing this function i also added a new 'mode marker' on 
+      the switchbar. usually you see something like this "1[site :: site]"
+      and then when you transfer: "1[site -> site]". when this function is
+      turned on and its waiting for new files to show up it will show
+      "1[site ** site]". when this is toggled you cant close the site, cwd
+      etc etc. so if you want to close you need to toggle it of before. 
+      
+
+
+
+    -----// NEWS //---------------------------------------------------------
+
+    new in v0.1
+
+    - layout changes hopefully to the better..
+
+    - added a config.h in the include dir, here you can change some default
+      settings for new sites etc. should be pretty self explanatory.
+
+    - at the bookmark manager, the keys to log in to the left site changed
+      from 'l' to 'e', easier to use when logging in manually...
+
+    + expanded to 14 switch pairs, shift+[1-5] (!"#$%). some keymap
+      adjustments or changing keyboard layout might be required to get them
+      working correctly.
+
+    + added a pre function (FUNCTION_SITEPRE_DIALOG=U in .pftp/keymap), the
+      pre command is configured in the bookmark manager dialog.
+      note: since it saves the pre_cmd in the bookmark file, bookmarks
+      from any other pftp version will be useless.
+
+      todo: a simple converter program..
+
+   ------------------------------------------------------------------------++
+

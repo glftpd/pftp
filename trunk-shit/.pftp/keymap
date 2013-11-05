@@ -1,0 +1,245 @@
+# pftp keymap file
+#
+# - the whole file isn't very userfriendly, so please JUST use the
+#   form as described. Otherwise unpredictable things may happen!
+# - comments start with a "#" as the FIRST character, the whole line
+#   will be ignored
+# - don't make empty lines, I'm not microshit where eveyone can fuck
+#   up configfiles without worrying
+# - items have the form "FUNCTION_NAME=KEY1,KEY2,..."
+#   (multiply keys get seperated by ',' no spaces between, nothing)
+#
+##########################################################################
+#
+# all these keys can be prefix'ed with the ESC key,
+# so a function can be triggered by first pressing the ESC key and
+# afterwards any other key.
+#
+# example: ESC-a, esc-A, esc-cTrL-A
+#
+# note: 'ESC-' prefix is NOT case sensitive,
+#       'CTRL-' key values are NOT case sensitive,
+#       special key values like 'SPACE' are NOT case sensitive,
+#       single character keys like 'a' 'A' are CASE SENSITIVE,
+#       single character keys prefix'ed with 'ESC-' are CASE SENSITIVE
+#       (example, 'ESC-a' != 'ESC-A' but 'esc-A' = 'ESC-A')
+# 
+# note: assigning default keys like 'esc-1' or '1' to a function,
+#       will overwrite its original function
+# 
+# note: some functions have hardcoded keys (marked with 'x') in pftp,
+#       so these keys can not be assigned to a function
+#
+#
+# value to use		description
+# ------------		-----------
+# 	CTRL-@
+# 	CTRL-A
+# 	CTRL-B
+# 	CTRL-C
+# 	CTRL-D
+# 	CTRL-E
+# 	CTRL-F
+# 	CTRL-G
+# x	CTRL-H		(hardcoded BACKSPACE Key)
+# x	CTRL-I		(hardcoded TAB Key)
+# 	CTRL-J
+# 	CTRL-K
+# 	CTRL-L
+# x	CTRL-M		(hardcoded RETURN Key)
+# 	CTRL-N
+# 	CTRL-O
+# 	CTRL-P
+# 	CTRL-Q
+# 	CTRL-R
+# 	CTRL-S
+# 	CTRL-T
+# x	CTRL-U		(hardcoded clear input field)
+# 	CTRL-V
+# 	CTRL-W
+# 	CTRL-X
+# 	CTRL-Y
+# 	CTRL-Z
+# x	CTRL-[		(hardcoded ESC Key)
+# 	CTRL-]
+# 	CTRL-^
+# 	CTRL-_
+# 	SPACE		Space Key
+# 	!		Exclamation mark
+# 	"		Double quote
+# 	#		Hash
+# 	$		Dollar
+# 	%		Percent
+# 	&		Ampersand
+# 	'		Apostrophe
+# 	(		Open Parenthesis
+# 	)		Close Parenthesis
+# 	*		Asterisk
+# 	+		Plus
+# 	COMMA		Comma (,)
+# 	-		Minus
+# 	.		Dot
+# 	/		Slash
+# 	0		Digit
+# 	1		Digit
+# 	2		Digit
+# 	3		Digit
+# 	4		Digit
+# 	5		Digit
+# 	6		Digit
+# 	7		Digit
+# 	8		Digit
+# 	9		Digit
+# 	:		Colon
+# 	;		Semicolon
+# 	<		Less than
+# 	=		Equals
+# 	>		Greater than
+# 	?		Question mark
+# 	@		At
+# 	A		Upper case alphabetic character
+# 	B		Upper case alphabetic character
+# 	C		Upper case alphabetic character
+# 	D		Upper case alphabetic character
+# 	E		Upper case alphabetic character
+# 	F		Upper case alphabetic character
+# 	G		Upper case alphabetic character
+# 	H		Upper case alphabetic character
+# 	I		Upper case alphabetic character
+# 	J		Upper case alphabetic character
+# 	K		Upper case alphabetic character
+# 	L		Upper case alphabetic character
+# 	M		Upper case alphabetic character
+# 	N		Upper case alphabetic character
+# 	O		Upper case alphabetic character
+# 	P		Upper case alphabetic character
+# 	Q		Upper case alphabetic character
+# 	R		Upper case alphabetic character
+# 	S		Upper case alphabetic character
+# 	T		Upper case alphabetic character
+# 	U		Upper case alphabetic character
+# 	V		Upper case alphabetic character
+# 	W		Upper case alphabetic character
+# 	X		Upper case alphabetic character
+# 	Y		Upper case alphabetic character
+# 	Z		Upper case alphabetic character
+# 	[		Open square bracket
+# 	\		Backslash
+# 	]		Close square bracket
+# 	^		Caret
+# 	_		Underscore
+# 	`		Back quote
+# 	a		Lower case alphabetic character
+# 	b		Lower case alphabetic character
+# 	c		Lower case alphabetic character
+# 	d		Lower case alphabetic character
+# 	e		Lower case alphabetic character
+# 	f		Lower case alphabetic character
+# 	g		Lower case alphabetic character
+# 	h		Lower case alphabetic character
+# 	i		Lower case alphabetic character
+# 	j		Lower case alphabetic character
+# 	k		Lower case alphabetic character
+# 	l		Lower case alphabetic character
+# 	m		Lower case alphabetic character
+# 	n		Lower case alphabetic character
+# 	o		Lower case alphabetic character
+# 	p		Lower case alphabetic character
+# 	q		Lower case alphabetic character
+# 	r		Lower case alphabetic character
+# 	s		Lower case alphabetic character
+# 	t		Lower case alphabetic character
+# 	u		Lower case alphabetic character
+# 	v		Lower case alphabetic character
+# 	w		Lower case alphabetic character
+# 	x		Lower case alphabetic character
+# 	y		Lower case alphabetic character
+# 	z		Lower case alphabetic character
+# 	{		Open brace
+# 	|		Vertical bar
+# 	}		Close brace
+# 	~		Tilde
+# 	DEL 		Delete Key
+#
+# (note, not all keys might be useable)
+#
+#########################################################################
+FUNCTION_BOOKMARK_DIALOG=o,O
+FUNCTION_SITEPREFS_DIALOG=e,E
+FUNCTION_CLOSESITE=c,C
+FUNCTION_TOGGLEMARK=SPACE
+FUNCTION_MARK_ALL=+
+FUNCTION_DEMARK_ALL=-
+FUNCTION_COMPARE=a,A
+FUNCTION_REFRESH_CHAINED=R
+FUNCTION_REFRESH=r
+FUNCTION_DELETE=D
+FUNCTION_TRANSFER_QUIT=T
+FUNCTION_TRANSFER=t
+FUNCTION_TRANSFER_OK=k,K
+FUNCTION_MAGICTRADE=e
+FUNCTION_MAGICTRADE_REPEAT=E
+FUNCTION_PREPARE_INSIDE=P
+FUNCTION_PREPARE_OUTSIDE=p
+FUNCTION_UNDO_PREPARED=i,I
+FUNCTION_MAKEDIR_DIALOG=m,M
+FUNCTION_RENAME_CHAINED_DIALOG=
+FUNCTION_RENAME_DIALOG=n,N
+FUNCTION_SITEPRE_DIALOG=U
+FUNCTION_NUKE_DIALOG=j
+FUNCTION_UNNUKE_DIALOG=J
+FUNCTION_UNDUPE_DIALOG=h
+FUNCTION_WIPE_DIALOG=H
+FUNCTION_SITECOMMAND_CHAINED_DIALOG=X
+FUNCTION_SITECOMMAND_DIALOG=x
+FUNCTION_CWD_DIALOG=W
+FUNCTION_CWD_1=w
+FUNCTION_CWD_ROOT=q
+FUNCTION_CWD_SEC01=
+FUNCTION_CWD_SEC02=
+FUNCTION_CWD_SEC03=
+FUNCTION_CWD_SEC04=
+FUNCTION_CWD_SEC05=
+FUNCTION_CWD_SEC06=
+FUNCTION_CWD_SEC07=
+FUNCTION_CWD_SEC08=
+FUNCTION_CWD_SEC09=
+FUNCTION_CWD_SEC10=
+FUNCTION_CWD_SEC11=
+FUNCTION_CWD_SEC12=
+FUNCTION_CWD_SEC13=
+FUNCTION_CWD_SEC14=
+FUNCTION_CWD_SEC15=
+FUNCTION_CWD_SEC16=
+FUNCTION_CWD_SEC17=
+FUNCTION_CWD_SEC18=
+FUNCTION_CWD_SEC19=
+FUNCTION_CWD_SEC20=
+FUNCTION_CWD_SEC21=
+FUNCTION_CWD_SEC22=
+FUNCTION_VIEWFILE=v,V
+FUNCTION_VIEWLOG=l,L
+FUNCTION_SCROLLSTATUS_UP=0
+FUNCTION_SCROLLSTATUS_DOWN=.
+FUNCTION_SCROLLFILELIST_LEFT=<
+FUNCTION_SCROLLFILELIST_RIGHT=>
+FUNCTION_JUMP_TO_NEWEST=Y
+FUNCTION_JUMP_THRUE_NEWEST=y
+FUNCTION_JUMP_SERVER_DIALOG=s,S
+FUNCTION_JUMP_SITE_FORWARD=]
+FUNCTION_JUMP_SITE_BACKWARD=[
+FUNCTION_SWITCH_LISTFORMAT_BACKWARD=F
+FUNCTION_SWITCH_LISTFORMAT_FORWARD=f
+FUNCTION_SWITCH_DIRSORTING=B
+FUNCTION_SWITCH_FILESORTING=b
+FUNCTION_SWITCH_REVERSE_DIRSORTING=
+FUNCTION_SWITCH_REVERSE_FILESORTING=
+FUNCTION_SWITCH_TRANSFER_MODE=Z
+FUNCTION_SWITCH_CHAIN_MODE=z
+
+##########################################################################
+# _QUIT   - if you forget to set a valid key here, you are lost
+##########################################################################
+FUNCTION_QUIT=Q
+
+##########################################################################

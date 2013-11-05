@@ -1,0 +1,26 @@
+again, as with linfXp back then, countless people asked for the sourcode
+of pftp. since I gave up on this program quite a while ago, why not.
+
+while looking at the source you should keep in mind that some or maybe
+even many of the functions and algorithms were coded while beeing
+drunk, so dont ask :)
+
+this source will compile flawlessly on a RedHatv4.2 system, not sure
+about others. it WILL NOT compile the way you want on a glibc system
+(like newer RedHats). you'll get screen corruption and errors, god
+knows what has changed with newer ncurses libraries.
+
+if you plan on porting it to other platforms, keep in mind it uses
+posix threads and, ofcourse, networking stuff. you won't get this
+to compile without at least some changes regarding those two major
+areas. you might as well need to additionally fix some keyboard input
+and display output, those things aren't really standardized as one would
+like it (I could at least successfully port it to fbsd and sunos).
+
+I dont think anyone will pick up where I left pftp, and continue to
+work on it (like removing bugs, annoyances or the half-working FXP
+part of it). But if you do so, keep at least my copyright somewhere
+next to yours then :P
+
+-- pSi
+   24/01/2k

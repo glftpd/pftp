@@ -1,0 +1,229 @@
+
+                                   .
+                  .         ______/,....
+         .. ,____/__- --\\\-\      | _______/\
+        -/-// _  _  \_/\_____\___  | /       /
+           /   )  )  \   _      )) |/       /
+          /   /  /   /    )     / //\      /
+         /   /  /   /___  _____/          /   pftpfxp mew edition
+------\-\\__/--/    \-/     //___/\\     / -------------------------
+        - ----(____ /((_____/--- -| ____/- ..
+          . ...  \\/. ..      .. .|/---- -
+                  .               .
+
+
+   disclaimer;
+   this package is for educational purposes only, any content
+   only may be used for LEGAL actions.
+   the authors cannot be held responsible for any illegal
+   actions. you own your actions. got it ?
+   the authors also do not and will never do or support
+   illegal actions resulting or initiated from offered tools.
+   hence this is open source, we demand a private copy of any
+   chances you do to any of the tools.
+   by using any of the offered tools, you accept this dislaimer. 
+
+
+   all this work is based on the pftpfxp source for by pSi&HoE.
+   the only goal for this project is to add some more or less
+   usefull functions and maybe catch the one or other bug.
+
+
+   note;
+   bookmarks are now getting auto-converted from older officiel
+   and mew versions, if manualy renamed to './pftp/bookmarks'.
+
+
+
+--[ c h a n g e s ]-------------------------------------------------
+
+        -------------------------------------------- v0.11.4mew6 ---
+        + 'site msg' detection string is now per site definable
+          over the bookmarks
+        + nuked dir prefix is now per site definable over the
+          bookmarks
+        + added SSL FXP (CPSV mode), defineable over bookmarks
+          (works of couse only if both sites support it)
+        + alternate FXP is now a seperate setting in bookmarks
+        + added reverse dir/file-list sorting option to bookmarks,
+          also new functions (FUNCTION_SWITCH_REVERSE_FILESORTING
+          and FUNCTION_SWITCH_REVERSE_DIRSORTING) can be mapped
+          over the keymap file
+        + added chained rename, function can be mapped over the
+          keymap file (FUNCTION_RENAME_CHAINED_DIALOG)
+        + transfer mode can now be defined in pftpconf (MODE=)
+          and as commandline switch (-mode), see pftpconf for
+          details
+        + startup filelist format can now be defined in pftpconf,
+          added additional filelist format (filename, size, owner),
+          see pftpconf for details
+        + few cosmetical fixes, eg;
+          section_labels now upto 6chars displayed in bookmarks,
+          input dialogs,
+          in 'open server manager' use 'K' to close a site/pair
+          without closing the manager too
+          ...
+
+        ------------------------------------------- v0.11.4mew5d ---
+        + fixed auto assign fast switch key
+        + added Post X-DUPE support,
+          it is based on X-DUPE mode 3, so after xfer finished
+          the receiving site should output an updated X-DUPE list
+          ex.: '226- X-DUPE: filename.ext'
+          so we would not need to run into a dupe before getting
+          a X-DUPE list (someone should had thought first before
+          releasing the kinda unfinished X-DUPE specs)
+        + included autoconnector and release.catcher mIRC script
+          (note; there will be no support/help for those)
+
+        ------------------------------------------- v0.11.4mew5e ---
+        + initial crash fix on freebsd, by ackmed
+        + added georg's fxp_honor_passive hack, if PASSIVE mode
+          is disabled, than alternate fxp will be used for this
+          site (i know the correct way would be additional prefs
+          in bookmarks, but seams to work for now and i dont need
+          it, so ...)
+        + added georg's local_refresh fix, local filesystem gets
+          now also refreshed during REFRESH_CHAINED
+        + auto assign fast switch key, if current site pair aint
+          got a fast switch key assigned yet and if there is a
+          free fast switch slot, it gets assigned          
+        + merged in officiel v0.11.4 source,
+          except the new filelist clear on refresh/cwd,
+          except statusmsg linebreak, since we have different,
+          password change is tobe found in the bookmark dialog
+          (where it belongs too, imho),
+          also bit different 'site msg' string detection
+          (it is still biased to glftpd and should therefor be
+          moved to bookmarks, but i dont need it, so ...)
+
+        ------------------------------------------- v0.11.2mew5c ---
+        + 'biased' first listing of nuked-dirs or similiar one
+          with 'special' chars in it is gone
+        + previous debug log gets now backuped,
+          and a new one is used when starting pftp
+        + STATUSMONITOR gets redrawn when resizing terminal
+        + \ and ' can be used in keymap file and dont need to be
+          written as acronym anymore
+        + merged in officiel v.0.11.3 source, new dirlisting sheme
+          is selectable over the config file (FREEOLDFILELIST)
+
+        ------------------------------------------- v0.11.2mew5b ---
+        + replaced KEYLINE with some preliminary STATUSMONITOR,
+          showing server.switch.key assignments and pftp mode
+        + reworked STATUSLINE messages
+        + fixed LOCALDIR= in .pftp/config, can now be any dir again
+
+        ------------------------------------------- v0.11.2mew5a ---
+        + .pftpconf is now .pftp/config (manualy rename pls)
+        + .pftpbookmrks is now .pftp/bookmarks (manualy rename pls)
+        + for alot of functions the trigger-keys can now be defined
+          over .pftp/keymap (see there for details)
+        + sections labels can now be defined over .pftp/config,
+          these labels are also used in '-section=' cmdline login
+
+        -------------------------------------------- v0.11.2mew5 ---
+        + fixed FIRSTFILES/FIRSTDIRSFILTER wich harmed filelisting*
+        + seperate directory and file listing sheme*
+        + 'b' now changes file sorting, 'B' changes dir sorting
+        + FIRSTFILES/FIRSTDIRSFILTER & directory/file sorting are
+          now also used while building xfer queue of directories
+          wich contain files and subdirectories*
+        + added 'exclude in CHAINING' filter,
+          defines patterns of unwanted directory names wich will
+          be ecluded in chain mode
+          (i recomment using sftp for shell trading - pftp chain
+          mode basicly needs a rewrite, but we wont put any work
+          in that)
+        + 'retry to login' loop can be stoped using 'c' button
+        + changed '-connect=' cmdline login from
+          '-connect=rightsite,leftsite' to
+          '-connect=leftsite,rightsite'
+        + most from officiel pftp keymapping is back and
+          sections got new keys assign (see section table below)
+        + merged in officiel v0.11.2 source
+
+          (* credits also go HoE for helping out here)
+
+        ------------------------------------------- v0.11.1mew4b ---
+        ? (knowledge of any changes got lost)
+
+        ------------------------------------------- v0.11.1mew4a ---
+        + LASTFILEFILTER is now FIRSTFILESFILTER & FIRSTDIRSFILTER
+        + removed FF setting in .pftpconf
+        + merged in officiel v0.11.1 source (excl clitches)
+
+        -------------------------------------------- v0.10.1mew4 ---
+        + added LASTFILEFILTER .pftpconf (see there for details)
+        + added retry to login if login failed
+        + selectable first site cmd after login
+        + added random REFRESH trigger to bookmarks, and
+          expanded to NOOP as well (former RNDREFR in .pftpconf)
+        + changeable NOOP cmd
+        + removed seperate port entry in bookmarks, you need now
+          to added hosts like 'ftp.host.com:1234' - if no port
+          given it defaults to port 21
+
+        ------------------------------------------- v0.10.1mew3a ---
+        + fixed TYPE handling
+        + fixed (but ugly) 'e' function cousing to xfer the
+          file under the cursor if no differences found
+        + fixed compile bug for systems without openssl
+        + merged in officiel v0.10.1 source
+
+        -------------------------------------------- v0.10.0mew3 ---
+        + disabled welcome screen
+        + disabled notsl delay
+        + 'q' = cwd /
+        + 'w' = cwd 1
+        + 'e' = refresh both sites > compare > fxp
+        + smarter TYPE handling
+        + added '-section=' cmdline login
+        + added '-passwd=' cmdline login
+        + auto assign server.switch.keys on cmdline login
+        + added STEALTH mode to bookmarks
+        + expanded to 22 sections
+
+
+
+--[ s e c t i o n t a b l e ]---------------------------------------
+
+   check .pftp/config and .pftp/keymap for settings.
+
+
+
+--[ k e y t a b l e ]-----------------------------------------------
+
+   only basic/default keys are descripted here, check .pftp/keymap.
+
+
+        key             - description
+        ---               -----------
+        UP              - cursor up
+        DOWN            - cursor down
+        END             - cursor end filelist
+        HOME            - cursor start filelist
+        PGUP            - cursor page up
+        PGDN            - cursor page down
+        LEFT            - 1 dir up
+        RIGHT           - enter dir
+        RETURN          - enter dir
+        TAB             - switch file windows
+        STATUS UP       - scroll status up
+        STATUS DOWN     - scroll status down
+    *   ESCAPE + '1-9'  - assign fast server switch
+    *   ESCAPE + 'a-z'  - goto file/dir starting with A-Z...
+
+    note;
+    * assigning these keys to another function will overwrite
+    these default function.
+
+
+
+                              'take it or leave it' ~tanesha team
+
+                                      http://pftpmew.tanesha.net/
+
+
+
+--------------------------------------------[ e n d o f f i l e ]---
