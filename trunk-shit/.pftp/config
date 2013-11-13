@@ -1,6 +1,6 @@
 DEBUG=1
 #LOCALIP=192.168.0.1
-DEVICE=eth1
+DEVICE=eth0
 VIEWFILTER=0
 # MODE           set to 1 for FTP mode,
 #                2 for FTP chained mode or
@@ -23,7 +23,7 @@ FREEOLDFILELIST=1
 DEFAULTFILTER=.* *.bad lips.nfo ti.nfo mojo.nfo coke.nfo
 FIRSTFILESFILTER=*.sfv *.nfo *.r?? *.0?? 
 FIRSTDIRSFILTER=cd*
-OKAYDIR=/home/zaarl/pftpfxp-mu/ok
+OKAYDIR=./ok
 LOCALDIR=./dl
 SECTION01_LABEL=util
 SECTION02_LABEL=game

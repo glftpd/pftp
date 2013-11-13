@@ -160,8 +160,8 @@ int tls_init(void) {
     SSL_load_error_strings();
     SSLeay_add_ssl_algorithms();
     // gotta play with this one day (prolly will be needed for win ftpds)
-    ssl_ctx = SSL_CTX_new(SSLv3_client_method());
-    //ssl_ctx=SSL_CTX_new(SSLv23_client_method());
+    //ssl_ctx = SSL_CTX_new(SSLv3_client_method());
+    ssl_ctx=SSL_CTX_new(SSLv23_client_method());
     //ssl_ctx = SSL_CTX_new(TLSv1_client_method());
 
     if (!ssl_ctx) {
