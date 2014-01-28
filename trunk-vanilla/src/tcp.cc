@@ -269,21 +269,22 @@ bool CTCP::SecureControl(void)
 
     if (err == 1) {
         if ((temp = tls_get_subject_name(this->ctrl_con))) {
-            sprintf(this->temp_string, "[Subject: %s]", temp);
+            sprintf(this->temp_string, "[Ctrl - Subject: %s]", temp);
             this->AddLogLine(this->temp_string);
         }
         if ((temp = tls_get_issuer_name(this->ctrl_con)))
-            sprintf(this->temp_string, "[Issuer:  %s]", temp);
+            sprintf(this->temp_string, "[Ctrl - Issuer:  %s]", temp);
         this->AddLogLine(this->temp_string);
 
-        sprintf(this->temp_string, "[Cipher:  %s (%d bits)]",
+        sprintf(this->temp_string, "[Ctrl - Cipher: %s %s (%d bits)]",
+		SSL_get_cipher_version(ctrl_con),
                 SSL_get_cipher(this->ctrl_con),
                 SSL_get_cipher_bits(this->ctrl_con, NULL));
         this->AddLogLine(this->temp_string);
 
         if (!(temp = tls_get_commonName(this->ctrl_con)))
             temp = "Not even a commonName!";
-        sprintf(this->temp_string, "[Common Name: %s]", temp);
+        sprintf(this->temp_string, "[Ctrl - Common Name: %s]", temp);
         this->AddLogLine(this->temp_string);
 
         return TRUE;
@@ -303,7 +304,6 @@ bool CTCP::SecureControl(void)
 bool CTCP::SecureData(void)
 {
     int err;
-//    char *temp;
 
     this->data_con = SSL_new(ssl_ctx);
     if (!this->data_con) {
@@ -332,6 +332,29 @@ bool CTCP::SecureData(void)
     }
 
     if (err == 1) {
+        char* temp;
+	if ((temp = tls_get_subject_name(this->data_con))) {
+            sprintf(this->temp_string, "[Data - Subject: %s]", temp);
+            this->AddLogLine(this->temp_string);
+        }
+        if ((temp = tls_get_issuer_name(this->data_con)))
+            sprintf(this->temp_string, "[Data - Issuer:  %s]", temp);
+        this->AddLogLine(this->temp_string);
+
+        sprintf(this->temp_string, "[Data - Cipher: %s %s (%d bits)]",
+                SSL_get_cipher_version(data_con),
+                SSL_get_cipher(this->data_con),
+                SSL_get_cipher_bits(this->data_con, NULL));
+        this->AddLogLine(this->temp_string);
+
+        if (!(temp = tls_get_commonName(this->data_con)))
+            temp = "Not even a commonName!";
+        sprintf(this->temp_string, "[Data - Common Name: %s]", temp);
+        this->AddLogLine(this->temp_string);
+
+        sprintf(this->temp_string, "[Data - Handshake reused : %s]", SSL_session_reused(data_con) ? "yes" : "no");
+        this->AddLogLine(this->temp_string);
+        
         return TRUE;
 /* TLS connection failed */
     } else {
