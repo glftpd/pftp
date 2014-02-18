@@ -25,6 +25,7 @@
 #include "tlsutil.h"
 //#include <openssl/x509.h>
 #include <openssl/ssl.h>
+#include <openssl/err.h>
 //#include <openssl/x509v3.h>
 extern SSL_CTX *ssl_ctx;
 #endif
@@ -325,8 +326,17 @@ bool CTCP::SecureData(void)
         pthread_testcancel();
         errs = SSL_get_error(this->data_con, err);
         if ((errs != SSL_ERROR_WANT_READ) && (errs != SSL_ERROR_WANT_WRITE)
-            && (errs != SSL_ERROR_WANT_X509_LOOKUP))
+            && (errs != SSL_ERROR_WANT_X509_LOOKUP)) {
+            char errbuf[120];
+            ERR_error_string_n(errs, errbuf, 120);
+            sprintf(this->temp_string, "SSL Error :  %s", errbuf);
+            AddLogLine(this->temp_string);
+
+            SSL_shutdown(this->data_con);
+            SSL_free(this->data_con);
+            this->data_con = NULL;
             return FALSE;
+        }
 //        usleep(1000);
         err = SSL_connect(this->data_con);
     }
@@ -358,6 +368,11 @@ bool CTCP::SecureData(void)
         return TRUE;
 /* TLS connection failed */
     } else {
+        char errbuf[120];
+        ERR_error_string_n(ERR_get_error(), errbuf, 120);
+        sprintf(this->temp_string, "SSL Error :  %s", errbuf);  
+        AddLogLine(this->temp_string);
+        
         SSL_shutdown(this->data_con);
         SSL_free(this->data_con);
         this->data_con = NULL;
