@@ -328,8 +328,8 @@ bool CTCP::SecureData(void)
         if ((errs != SSL_ERROR_WANT_READ) && (errs != SSL_ERROR_WANT_WRITE)
             && (errs != SSL_ERROR_WANT_X509_LOOKUP)) {
             char errbuf[120];
-            ERR_error_string_n(errs, errbuf, 120);
-            sprintf(this->temp_string, "SSL Error :  %s", errbuf);
+            ERR_error_string_n(ERR_get_error(), errbuf, 120);
+            sprintf(this->temp_string, "SSL Error : (%d) %s", errs, errbuf);
             AddLogLine(this->temp_string);
 
             SSL_shutdown(this->data_con);
@@ -370,7 +370,7 @@ bool CTCP::SecureData(void)
     } else {
         char errbuf[120];
         ERR_error_string_n(ERR_get_error(), errbuf, 120);
-        sprintf(this->temp_string, "SSL Error :  %s", errbuf);  
+        sprintf(this->temp_string, "SSL Error : %s", errbuf);  
         AddLogLine(this->temp_string);
         
         SSL_shutdown(this->data_con);
