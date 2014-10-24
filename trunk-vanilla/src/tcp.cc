@@ -235,7 +235,7 @@ bool CTCP::OpenControl(BOOKMARK * bm)
 bool CTCP::SecureControl(void)
 {
     int err;
-    char *temp;
+    const char *temp;
     if (!this->control_connected)
         return FALSE;
 
@@ -288,6 +288,10 @@ bool CTCP::SecureControl(void)
         sprintf(this->temp_string, "[Ctrl - Common Name: %s]", temp);
         this->AddLogLine(this->temp_string);
 
+        temp = SSL_get_version(this->ctrl_con);
+        sprintf(this->temp_string, "[Ctrl - Protocol: %s]", temp);
+        this->AddLogLine(this->temp_string);
+                        
         return TRUE;
 /* TLS connection failed */
     } else {
@@ -342,7 +346,7 @@ bool CTCP::SecureData(void)
     }
 
     if (err == 1) {
-        char* temp;
+        const char* temp;
 	if ((temp = tls_get_subject_name(this->data_con))) {
             sprintf(this->temp_string, "[Data - Subject: %s]", temp);
             this->AddLogLine(this->temp_string);
@@ -360,6 +364,10 @@ bool CTCP::SecureData(void)
         if (!(temp = tls_get_commonName(this->data_con)))
             temp = "Not even a commonName!";
         sprintf(this->temp_string, "[Data - Common Name: %s]", temp);
+        this->AddLogLine(this->temp_string);
+
+        temp = SSL_get_version(this->data_con);
+        sprintf(this->temp_string, "[Data - Protocol: %s]", temp);
         this->AddLogLine(this->temp_string);
 
         sprintf(this->temp_string, "[Data - Handshake reused : %s]", SSL_session_reused(data_con) ? "yes" : "no");
