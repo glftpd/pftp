@@ -1879,7 +1879,7 @@ void CDisplayHandler::InputHome(void) {
 
 void CDisplayHandler::InputBackspace(void) {
     if (this->cursorpos > 0) {
-        strcpy(this->input + this->cursorpos - 1, this->input + this->cursorpos);
+        memmove(this->input + this->cursorpos - 1, this->input + this->cursorpos, strlen(this->input + this->cursorpos) + 1);
         if (this->input_hidden)
             *(this->hidden_input + this->input_chars - 1) = '\0';
 
