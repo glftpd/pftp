@@ -2604,13 +2604,9 @@ bool CServer::LeechFile(char *file, int notice_type, bool as_ok,
 
    this->tcp.WaitForMessage();
  */
-    if (prefs.use_ssl_data) {
-        if (!SetProt(1))
-//secure data
-            return (FALSE);
-    } else if (!SetProt(0))
-//secure data
+   if (!SetProt(prefs.use_ssl_data ? 1 : 0)) {
         return (FALSE);
+    }
 
     if (prefs.use_pasv == FALSE) {
         if (!this->tcp.OpenData(port_str, this->use_local)) {
@@ -3531,6 +3527,10 @@ bool CServer::UploadFile(char *file, bool no_wait, bool as_ok)
    this->tcp.WaitForMessage();
 
  */
+   if (!SetProt(prefs.use_ssl_data ? 1 : 0)) {
+        return (FALSE);
+    }
+
     if (prefs.use_pasv == FALSE) {
         if (!this->tcp.OpenData(port_str, this->use_local)) {
             this->error = this->tcp.GetError();
