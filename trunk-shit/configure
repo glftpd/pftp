@@ -104,7 +104,7 @@ if [ $USESSL = "1" ]; then
 fi
 
 rm -f src/Makefile
-CPPF="-Wno-char-subscripts -W -g -Wall -D_REENTRANT  -U_FORTIFY_SOURCE -I../include"
+CPPF="-Wno-vla -Wno-write-strings -Wno-char-subscripts -W -g -Wall -D_REENTRANT  -U_FORTIFY_SOURCE -I../include"
 DO="strip pftp"
 BINARY="pftp"
 CPP="g++"

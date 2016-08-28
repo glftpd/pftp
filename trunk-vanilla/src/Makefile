@@ -1,17 +1,16 @@
-SSLDIR          = /usr
-CPPFLAGS        = -Wall -Wno-unused-result -Wno-write-strings -D_REENTRANT -I../include -O2 -DTLS
-LINKFLAGS       = -lpanel -lcurses -lpthread -lssl -lcrypto -DTLS -ldl
-DO              = strip pftp
+SSLDIR          = /home/hoe/src/glftpd/openssl/openssl_bins
+CPPFLAGS        = -Wall -Wno-unused-result -Wno-write-strings -D_REENTRANT -I../include -D_FORTIFY_SOURCE=2 -fstack-protector-all -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -flto -fPIE -g -DDEBUG -I$(SSLDIR)/include -DTLS
+LINKFLAGS       = -L$(SSLDIR)/lib -lssl -lcrypto -DTLS -lpanel -lncurses -ltinfo -lgpm -g
+LINKFLAGSDYN    = -lpthread -ldl
 OBJS            = tlsutil.o
 BINARY          = pftp
-CPP             = g++
+CPP             = g++ -pipe
+MAINOBJS = main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o
+
 .cc.o	:
 	        $(CPP) -c $(CPPFLAGS) $<
 
-all	:	main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS)
-		$(CPP) -o pftp main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS)
-		$(DO)
-		cp -f $(BINARY) ..
+all	:	pftp-dynamic pftp-static pftp-half-static
 
 tcp.o       :	../include/tcp.h ../include/defines.h ../include/tlsutil.h
 tlsutil.o   :	../include/tlsutil.h
@@ -25,17 +24,19 @@ server.o    :	../include/tcp.h ../include/server.h ../include/defines.h ../inclu
 switchserver.o     :	../include/tcp.h ../include/server.h ../include/defines.h ../include/displayhandler.h ../include/tlsutil.h
 
 
-dynamic	:	main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS)
-		$(CPP) -o pftp main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS)
-		$(DO)
-		cp -f $(BINARY) ..
+pftp-dynamic:	$(MAINOBJS) $(OBJS)
+		$(CPP) -o pftp-dynamic $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN)
+		cp -f pftp-dynamic ..
 
-static	:	main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS)
-		$(CPP) -o pftp main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS) -static
-		$(DO)
-		cp -f $(BINARY) ..
+pftp-static:	$(MAINOBJS) $(OBJS)
+		$(CPP) -o pftp-static $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN) -static
+		cp -f pftp-static ..
 
-clean	:	
+pftp-half-static:	$(MAINOBJS) $(OBJS)
+		$(CPP) -o pftp-half-static $(MAINOBJS) $(OBJS) -Wl,-Bstatic $(LINKFLAGS) -Wl,-Bdynamic $(LINKFLAGSDYN)
+		cp -f pftp-half-static ..
+
+clean:
 		rm -f *.o; rm -f ../$(BINARY);rm -f $(BINARY)
 
 

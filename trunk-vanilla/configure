@@ -112,28 +112,74 @@ fi
 
 rm -f src/Makefile
 CPPF="-Wall -Wno-unused-result -Wno-write-strings -D_REENTRANT -I../include"
-DO="strip pftp"
 BINARY="pftp"
-CPP="g++"
+CPP="g++ -pipe"
 
-if [ $SYS = "bsd" ]; then
- LINKF="-pthread -lpanel -lcurses"
-elif [ $SYS = "cyg" ]; then
+if [ $SYS = "cyg" ]; then
  CPPF="$CPPF -DCYGWIN"
- LINKF="-lpanel -lcurses"
- DO="strip pftp.exe"
  BINARY="pftp.exe"
-elif [ $SYS = "lnx" ]; then
- LINKF="-lpanel -lcurses -lpthread"
 elif [ $SYS = "osx" ]; then                                                                               
  CPPF="$CPPF -DOSX"
- LINKF="-lpanel -lncurses"     
 fi
 
+LINKF="-lpanel -lncurses"
+LINKFDYN="-lpthread"
+
+rm -f tmp.c
+cat >tmp.c <<EOF
+#include <ncurses.h>
+int  main(void) {
+ return 0;
+}
+EOF
+
+$CPP  -o tmp.out tmp.c -ltinfo >/dev/null 2>/dev/null
+res=$?
+
+if [ $res -eq 0 ]; then
+ LINKF="$LINKF -ltinfo"
+fi
+
+$CPP  -o tmp.out tmp.c  -D_FORTIFY_SOURCE=2 -fstack-protector-all -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE >/dev/null 2>/dev/null
+res=$?
+
+if [ $res -eq 0 ]; then
+ CPPF="$CPPF -D_FORTIFY_SOURCE=2 -fstack-protector-all -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+fi
+
+$CPP  -o tmp.out tmp.c -flto >/dev/null 2>/dev/null
+res=$?
+
+if [ $res -eq 0 ]; then
+ CPPF="$CPPF -flto"
+fi
+
+$CPP  -o tmp.out tmp.c -fPIE >/dev/null 2>/dev/null
+res=$?
+
+if [ $res -eq 0 ]; then
+ CPPF="$CPPF -fPIE"
+fi
+
+$CPP  -o tmp.out tmp.c -lgpm >/dev/null 2>/dev/null
+res=$?
+
+if [ $res -eq 0 ]; then
+ LINKF="$LINKF -lgpm"
+fi
+
+$CPP  -o tmp.out tmp.c -ldl >/dev/null 2>/dev/null
+res=$?
+
+if [ $res -eq 0 ]; then
+ LINKFDYN="$LINKFDYN -ldl"
+fi
+ 
+rm -f tmp.out tmp.c 2>/dev/null
+ 
 if [ $DEBUG = "1" ]; then
  CPPF="$CPPF -g -DDEBUG"
  LINKF="$LINKF -g"
- DO=""
 else
  CPPF="$CPPF -O2"
 fi
@@ -145,24 +191,19 @@ if [ $USESSL = "1" ]; then
   TMP='-DTLS'
   CPPF="$CPPF $TMP"
   TMP='-lssl -lcrypto -DTLS'
-  LINKF="$LINKF $TMP"
+  LINKF="$TMP $LINKF"
  else
   TMP='-I$(SSLDIR)/include -DTLS'
   CPPF="$CPPF $TMP"
   TMP='-L$(SSLDIR)/lib -lssl -lcrypto -DTLS'
-  LINKF="$LINKF $TMP"
+  LINKF="$TMP $LINKF"
  fi
-fi
-
-if [ $SYS = "lnx" ]; then
- TMP="-ldl"
- LINKF="$LINKF $TMP"
 fi
 
 echo "SSLDIR          = $HOPENSSLDIR" >>src/Makefile
 echo "CPPFLAGS        = $CPPF" >>src/Makefile
 echo "LINKFLAGS       = $LINKF" >>src/Makefile
-echo "DO              = $DO" >>src/Makefile
+echo "LINKFLAGSDYN    = $LINKFDYN" >>src/Makefile
 echo "OBJS            = $OBJS" >>src/Makefile
 echo "BINARY          = $BINARY" >>src/Makefile
 echo "CPP             = $CPP" >>src/Makefile
@@ -172,4 +213,4 @@ rm -f Makefile
 echo "MAKE=$MAKE" >Makefile
 cat Makefile.in >>Makefile
 rm -f src/*.o src/pftp pftp
-echo "Done, you can do \"$MAKE\" or \"$MAKE static\" now..."
+echo "Done, you can do \"$MAKE\" now..."
