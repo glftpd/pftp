@@ -3,7 +3,7 @@ MAINOBJS = main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opens
 .cc.o	:
 	        $(CPP) -c $(CPPFLAGS) $<
 
-all	:	pftp
+all	:	dynamic
 
 tcp.o       :	../include/tcp.h ../include/defines.h ../include/tlsutil.h
 tlsutil.o   :	../include/tlsutil.h
@@ -17,15 +17,15 @@ server.o    :	../include/tcp.h ../include/server.h ../include/defines.h ../inclu
 switchserver.o     :	../include/tcp.h ../include/server.h ../include/defines.h ../include/displayhandler.h ../include/tlsutil.h
 
 
-pftp:		$(MAINOBJS) $(OBJS)
+dynamic:		$(MAINOBJS) $(OBJS)
 		$(CPP) -o pftp $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN)
 		cp -f pftp ..
 
-pftp-static:	$(MAINOBJS) $(OBJS)
+static:	$(MAINOBJS) $(OBJS)
 		$(CPP) -o pftp-static $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN) -static
 		cp -f pftp-static ..
 
-pftp-half-static:	$(MAINOBJS) $(OBJS)
+half-static:	$(MAINOBJS) $(OBJS)
 		$(CPP) -o pftp-half-static $(MAINOBJS) $(OBJS) -Wl,-Bstatic $(LINKFLAGS) -Wl,-Bdynamic $(LINKFLAGSDYN)
 		cp -f pftp-half-static ..
 

@@ -1,6 +1,14 @@
 all     :       src/Makefile
 	        cd src;$(MAKE);cd ..
 
+static     :       src/Makefile
+	        cd src;$(MAKE) static;cd ..
+dynamic     :       src/Makefile
+	        cd src;$(MAKE) dynamic;cd ..
+
+half-static     :       src/Makefile
+	        cd src;$(MAKE) half-static;cd ..
+
 indent  :       src/Makefile
 	        cd src;indent -nut -kr *.cc; rm *~; cd ..
 

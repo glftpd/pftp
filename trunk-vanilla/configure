@@ -133,6 +133,13 @@ int  main(void) {
 }
 EOF
 
+$CPP  -o tmp.out tmp.c -lgpm >/dev/null 2>/dev/null
+res=$?
+
+if [ $res -eq 0 ]; then
+ LINKF="$LINKF -lgpm"
+fi
+
 $CPP  -o tmp.out tmp.c -ltinfo >/dev/null 2>/dev/null
 res=$?
 
