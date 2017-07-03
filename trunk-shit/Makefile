@@ -1,0 +1,54 @@
+MAKE=make
+all     :       src/Makefile
+			cd src; $(MAKE); cd ..
+
+dynamic :       src/Makefile
+			cd src; $(MAKE) dynamic; cd ..
+
+indent  :       src/Makefile
+			cd src; indent -nut -kr *.cc; rm *~; cd ..
+
+astyle  :       src/Makefile
+			cd src; astyle --style=kr *.cc; rm *.orig; cd ..
+
+bcpp    :       src/Makefile
+			cd src; for x in *.cc; do bcpp $$x; done; rm *.orig; cd ..
+
+static  :       src/Makefile
+			cd src; $(MAKE) static; cd ..
+
+clean   :
+			cd src; $(MAKE) clean; cd ..
+
+pkg     :
+			rm -f Makefile; cd src; $(MAKE) clean; rm -f Makefile; rm -f pftp; rm -f ../pftp; cd ..; cd .. && \
+			tar -czf pftpshit-src.tgz trunk-shit --exclude .pftp --exclude */ok --exclude */dl --exclude *.gitignore --exclude *.log 
+
+rls     :
+			./configure; $(MAKE) dynamic;
+			mkdir ../pftpshit
+			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
+			rm -f Makefile pftp
+			cd src; $(MAKE) clean; rm -f Makefile; rm -f pftp; cd ..
+			cd ..; tar -czf pftpshit-src.tgz trunk-shit --exclude .pftp --exclude */ok --exclude */dl --exclude *.gitignore --exclude *.log 
+			cd ..; tar -czf pftpshit.tgz pftpshit
+			cd ..; rm -rf pftpshit
+
+drls:
+			./configure --debug; $(MAKE) dynamic;
+			mkdir ../pftpshit
+			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
+			rm -f Makefile pftp
+			cd src; $(MAKE) clean; rm -f Makefile; rm -f pftp; cd ..
+			cd ..; tar -czf pftpshit-src.tgz trunk-shit --exclude .pftp --exclude */ok --exclude */dl --exclude *.gitignore --exclude *.log 
+			cd ..; tar -czf pftpshit-debug.tgz pftpshit
+			cd ..; rm -rf pftpshit
+
+distclean:
+			$(MAKE) clean; \
+			rm -f core `find . \( -not -type d \) -and \
+			\( -name '*.orig' -o -name '*.rej' -o -name '*~' \
+			-o -name '*.bak' -o -name '#*#' -o -name '.*.orig' \
+			-o -name '.*.rej' -o -name '.SUMS' -o -size 0 \) -type f -print` TAGS tags \
+			Makefile src/Makefile
+

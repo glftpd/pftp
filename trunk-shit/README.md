@@ -7,7 +7,7 @@
 - [README.MEW](README.MEW) pftpmew README (pftpshit is based on mew)
 - configuration is in include/config.h, ```./configure && make``` to compile
 
-## Changes:
+### Changes:
 
 - cleaned up Makefile
 - fixed a few compile warnings

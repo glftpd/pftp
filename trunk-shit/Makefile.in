@@ -1,3 +1,6 @@
+
+EXCLUDE=--exclude .pftp --exclude */ok --exclude */dl --exclude *.gitignore --exclude *.log --exclude *.bak --exclude *.xz
+
 all     :       src/Makefile
 			cd src; $(MAKE); cd ..
 
@@ -20,17 +23,18 @@ clean   :
 			cd src; $(MAKE) clean; cd ..
 
 pkg     :
-			rm -f Makefile; cd src; $(MAKE) clean; rm -f Makefile; rm -f pftp; rm -f ../pftp; cd ..; cd .. && \
-			tar -czf pftpshit-src.tgz trunk-shit --exclude .pftp --exclude */ok --exclude */dl --exclude *.gitignore --exclude *.log 
+			rm -f Makefile; cd src; $(MAKE) clean; ${MAKE} cfgclean;
+			rm -f Makefile; rm -f pftp; rm -f ../pftp; cd ..; cd .. && \
+			tar -czf pftpshit-src.tgz trunk-shit ${EXCLUDE}
 
 rls     :
 			./configure; $(MAKE) dynamic;
 			mkdir ../pftpshit
 			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
 			rm -f Makefile pftp
-			cd src; $(MAKE) clean; rm -f Makefile; rm -f pftp; cd ..
-			cd ..; tar -czf pftpshit-src.tgz trunk-shit --exclude .pftp --exclude */ok --exclude */dl --exclude *.gitignore --exclude *.log 
-			cd ..; tar -czf pftpshit.tgz pftpshit
+			cd src; $(MAKE) clean; ${MAKE} cfgclean; rm -f Makefile; rm -f pftp; cd ..
+			cd ..; tar -czf pftpshit-src.tgz trunk-shit ${EXCLUDE}
+			cd ..; tar -czf pftpshit.tgz pftpshit --exclude *.pftp/bookmarks*
 			cd ..; rm -rf pftpshit
 
 drls:
@@ -38,16 +42,26 @@ drls:
 			mkdir ../pftpshit
 			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
 			rm -f Makefile pftp
-			cd src; $(MAKE) clean; rm -f Makefile; rm -f pftp; cd ..
-			cd ..; tar -czf pftpshit-src.tgz trunk-shit --exclude .pftp --exclude */ok --exclude */dl --exclude *.gitignore --exclude *.log 
+			cd src; $(MAKE) clean; ${MAKE} cfgclean; rm -f Makefile; rm -f pftp; cd ..
+			cd ..; tar -czf pftpshit-src.tgz trunk-shit ${EXCLUDE}
 			cd ..; tar -czf pftpshit-debug.tgz pftpshit
 			cd ..; rm -rf pftpshit
 
 distclean:
-			$(MAKE) clean; \
+			$(MAKE) clean; ${MAKE} cfgclean \
 			rm -f core `find . \( -not -type d \) -and \
 			\( -name '*.orig' -o -name '*.rej' -o -name '*~' \
 			-o -name '*.bak' -o -name '#*#' -o -name '.*.orig' \
 			-o -name '.*.rej' -o -name '.SUMS' -o -size 0 \) -type f -print` TAGS tags \
 			Makefile src/Makefile
+
+cfgclean:
+			test -s include/config.h.bak || cp include/config.h include/config.h.bak && sed -i \
+			  -e 's/^\(#define DEFAULT_USERNAME\).*/\1 "<enter your default ftp username here>"/' \
+			  -e 's/^\(#define DEFAULT_PASSWORD\).*/\1 ""/' \
+			  -e 's/^\(#define PASS\).*" \(.*\/\/.*\)/\1 "urpasshere" \2/' \
+   			  -e 's/^\(#define PORT\).*[0-9] \(.*\/\/.*\)/\1 12345 \2/' \
+		    	  -e 's/^\(#define WORKINGPATH\).*/\1 "\/home\/<username>"/' include/config.h;
+			test -s .pftp/config.bak || cp .pftp/config .pftp/config.bak && \
+			sed -i -e 's/\(LOCALIP=\).*/\1192.168.0.1/' -e 's/^\(OKAYDIR=\).*/\1.\/ok/' -e 's/^\(LOCALDIR=\).*/\1.\/dl/' .pftp/config
 

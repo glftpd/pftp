@@ -47,12 +47,15 @@ do
         elif [ $ac_option = "lnx" ]; then
             SYS="lnx"
             echo "user defined platform = $SYS"
+        elif [ $ac_option = "deb" ]; then
+            SYS="deb"
+            echo "user defined platform = $SYS"
         elif [ $ac_option = "bsd" ]; then
             SYS="bsd"
             echo "user defined platform = $SYS"
         else
             echo "try : ./configure <--openssldir [dir]> <--debug> <--nossl> <platform>"
-            echo "supported platforms = bsd/lnx/cyg"
+            echo "supported platforms = bsd/lnx/deb/cyg"
             exit 1
         fi
     fi
@@ -60,7 +63,7 @@ done
 
 if [ -z $SYS ]; then
     echo "try : ./configure <--openssldir [dir]> <--debug> <--nossl> <platform>"
-    echo "supported platform = bsd/lnx/cyg"
+    echo "supported platform = bsd/lnx/deb/cyg"
     exit 1
 fi
 
@@ -116,6 +119,8 @@ elif [ $SYS = "cyg" ]; then
     LINKF="-lpanel -lncurses -lpthreadGC"
     DO="strip pftp.exe"
     BINARY="pftp.exe"
+elif [ $SYS = "deb" ]; then
+    LINKF="-lpanel -lncurses -lpthread -ltinfo -lgpm"
 elif [ $SYS = "lnx" ]; then
     LINKF="-lpanel -lncurses -lpthread"
 fi
@@ -135,7 +140,7 @@ if [ $USESSL = "1" ]; then
     CPPF="$CPPF $TMP"
     TMP='-L$(SSLDIR)/lib -lssl -lcrypto -DTLS'
     LINKF="$LINKF $TMP"
-    if [ $SYS = "lnx" ]; then
+    if [ $SYS = "lnx" || $SYS = "deb" ]; then
         TMP="-ldl"
         LINKF="$LINKF $TMP"
     fi

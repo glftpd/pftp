@@ -1,4 +1,4 @@
-// defualts
+// defaults
 // file/dir sorting: 1 = name, 2 = size, 3 = date
 
 #define SLEEP_AWAY 60
