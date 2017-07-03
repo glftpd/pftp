@@ -1136,7 +1136,8 @@ void CDisplayHandler::RedrawBookmarkSites(void) {
 
     // erase background
     wattrset(this->window_dialog,
-             COLOR_PAIR(STYLE_INVERSE) | this->inverse_mono);
+//             COLOR_PAIR(STYLE_INVERSE) | this->inverse_mono);
+             COLOR_PAIR(STYLE_WHITE) | this->inverse_mono);
 
     for (n = 0; n < 14; n++)
         mvwaddstr(this->window_dialog, n + 2, 2,
@@ -1154,12 +1155,14 @@ void CDisplayHandler::RedrawBookmarkSites(void) {
     while (bm_temp && (n <= 14)) {
         if (this->siteopen_bm_magic == m) {
             wattrset(this->window_dialog,
-                     COLOR_PAIR(STYLE_WHITE) | A_NORMAL);
+//                     COLOR_PAIR(STYLE_WHITE) | A_NORMAL);
+                     COLOR_PAIR(STYLE_INVERSE) | A_NORMAL);
             mvwaddstr(this->window_dialog, ypos, 2,
                       "                                                         ");
             mvwaddnstr(this->window_dialog, ypos, 2, bm_temp->label, 57);
             wattrset(this->window_dialog,
-                     COLOR_PAIR(STYLE_INVERSE) | this->inverse_mono);
+//                     COLOR_PAIR(STYLE_INVERSE) | this->inverse_mono);
+                     COLOR_PAIR(STYLE_WHITE) | this->inverse_mono);
             this->siteopen_bm_realmagic = bm_temp->magic;
         } else
             mvwaddnstr(this->window_dialog, ypos, 2, bm_temp->label, 57);

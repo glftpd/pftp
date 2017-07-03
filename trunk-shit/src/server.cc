@@ -507,35 +507,35 @@ void CServer::HandleMessage(int msg, char *param, int magic) {
             if (this->server_type == SERVER_TYPE_LOCAL)
                 this->LocalRenTo(param);
             else {
-                if (!this->RenTo(param));
+                if (!this->RenTo(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_NUKE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->Nuke(param));
+                if (!this->Nuke(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_UNNUKE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->UnNuke(param));
+                if (!this->UnNuke(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_WIPE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->Wipe(param));
+                if (!this->Wipe(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_UNDUPE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->UnDupe(param));
+                if (!this->UnDupe(param)) {};
                 this->EvalError();
             }
             break;
@@ -2532,12 +2532,13 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic) {
     fl_head = this->ObtainFilelist(&dummy);
     fl_temp = fl_head;
     while ((okay == FALSE) && (fl_temp != NULL)) {
-        if (this->prefs.use_exclude_source)
+        if (this->prefs.use_exclude_source) {
             filter = FilterFilename(fl_temp->name, this->prefs.exclude_source);
-        else
+        } else {
             filter = FilterFilename(fl_temp->name, NULL);
+        }
 
-        if (filter)
+        if (filter) {
             if (fl_temp->is_dir) {
                 if (strcmp("..", fl_temp->name))
                     okay = TRUE;
@@ -2545,6 +2546,7 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic) {
                 if (fl_temp->size)
                     okay = TRUE;
             }
+        }
         fl_temp = fl_temp->next;
     }
 

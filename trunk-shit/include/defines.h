@@ -378,7 +378,7 @@
 typedef struct _KEYS {
     int function_code;
     int esc_function_code;
-};
+} _KEYS;
 
 typedef struct _MSGLIST {
     int msg, extended, function_key;

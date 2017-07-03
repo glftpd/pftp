@@ -29,5 +29,5 @@ static  :    main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o ope
 		cp -f $(BINARY) ..
 
 clean   :
-		rm -f *.o; rm -f ../$(BINARY);rm -f $(BINARY)
+		rm -f *.o; rm -f ../$(BINARY); rm -f $(BINARY)
 
