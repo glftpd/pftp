@@ -10,6 +10,6 @@
 ### Changes:
 
 - cleaned up Makefile
-- fixed a few compile warnings
-- changed colors: black bg etc
+- fixed a few compile warnings, static
+- changed colors: black background etc
 

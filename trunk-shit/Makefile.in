@@ -28,7 +28,7 @@ pkg     :
 			tar -czf pftpshit-src.tgz trunk-shit ${EXCLUDE}
 
 rls     :
-			./configure; $(MAKE) dynamic;
+			./configure; $(MAKE) static;
 			mkdir ../pftpshit
 			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
 			rm -f Makefile pftp
@@ -38,7 +38,7 @@ rls     :
 			cd ..; rm -rf pftpshit
 
 drls:
-			./configure --debug; $(MAKE) dynamic;
+			./configure --debug; $(MAKE) static;
 			mkdir ../pftpshit
 			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
 			rm -f Makefile pftp
@@ -48,12 +48,13 @@ drls:
 			cd ..; rm -rf pftpshit
 
 distclean:
-			$(MAKE) clean; ${MAKE} cfgclean \
+			$(MAKE) clean; ${MAKE} cfgclean; \
 			rm -f core `find . \( -not -type d \) -and \
 			\( -name '*.orig' -o -name '*.rej' -o -name '*~' \
 			-o -name '*.bak' -o -name '#*#' -o -name '.*.orig' \
 			-o -name '.*.rej' -o -name '.SUMS' -o -size 0 \) -type f -print` TAGS tags \
-			Makefile src/Makefile
+			Makefile src/Makefile 
+#>/dev/null 2>&1
 
 cfgclean:
 			test -s include/config.h.bak || cp include/config.h include/config.h.bak && sed -i \

@@ -2,7 +2,7 @@
 		$(CPP) -c $(CPPFLAGS) $<
 
 all     :    main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS)
-		$(CPP) -o pftp main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS)
+		$(CPP) -o ${BINARY} main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS)
 		$(DO)
 		cp -f $(BINARY) ..
 
@@ -19,15 +19,15 @@ switchserver.o     :    ../include/tcp.h ../include/server.h ../include/defines.
 
 
 dynamic :    main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS)
-		$(CPP) -o pftp main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS)
+		$(CPP) -o ${BINARY} main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS)
 		$(DO)
 		cp -f $(BINARY) ..
 
 static  :    main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS)
-		$(CPP) -o pftp main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS) -static
-		$(DO)
-		cp -f $(BINARY) ..
+		$(CPP) -o ${BINARY}-static main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o $(OBJS) $(LINKFLAGS) -static
+		strip ${BINARY}-static
+		cp -f $(BINARY)-static ..
 
 clean   :
-		rm -f *.o; rm -f ../$(BINARY); rm -f $(BINARY)
+		rm -f *.o; rm -f ../$(BINARY); rm -f $(BINARY); rm -rf ../${BINARY}-static; rm -rf ${BINARY}-static
 
