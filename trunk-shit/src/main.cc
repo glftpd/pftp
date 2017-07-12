@@ -76,7 +76,8 @@ void mywborder(WINDOW *win) {
 #define RETSIGTYPE void
 typedef RETSIGTYPE sigfunc(int);
 #define SIGNAL_HANDLER(x) \
-    RETSIGTYPE x (int sig)
+    RETSIGTYPE x (int)
+//    RETSIGTYPE x (int sig)
 
 sigfunc *my_signal(int sig_no, sigfunc * sig_handler) {
     struct sigaction sa, osa;
@@ -1253,7 +1254,8 @@ bool FilterDirname(char *filename, char *filter) {
     return (!pat_fault);
 }
 
-void *listenUdp(void *ptr) {
+// void *listenUdp(void *ptr) {
+void *listenUdp(void *) {
 	// the UDP listener thingy here :-)
     char buf[BSIZE],*pass,*sectionUdp,*b,*sites,args[1024], *release, *release_string;
     int sd,fromlen;

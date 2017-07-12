@@ -30,9 +30,9 @@ pkg     :
 rls     :
 			./configure; $(MAKE) static;
 			mkdir ../pftpshit
-			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
-			rm -f Makefile pftp
-			cd src; $(MAKE) clean; ${MAKE} cfgclean; rm -f Makefile; rm -f pftp; cd ..
+			cp -R pftp pftp-static .pftp irssi old README.* pftp-shit.nfo ../pftpshit
+			rm -f Makefile pftp pftp-static
+			cd src; $(MAKE) clean; ${MAKE} cfgclean; rm -f Makefile; rm -f pftp pftp-static; cd ..
 			cd ..; tar -czf pftpshit-src.tgz trunk-shit ${EXCLUDE}
 			cd ..; tar -czf pftpshit.tgz pftpshit --exclude *.pftp/bookmarks*
 			cd ..; rm -rf pftpshit
@@ -40,9 +40,9 @@ rls     :
 drls:
 			./configure --debug; $(MAKE) static;
 			mkdir ../pftpshit
-			cp -R pftp .pftp irssi old README.* pftp-shit.nfo ../pftpshit
-			rm -f Makefile pftp
-			cd src; $(MAKE) clean; ${MAKE} cfgclean; rm -f Makefile; rm -f pftp; cd ..
+			cp -R pftp pftp-static .pftp irssi old README.* pftp-shit.nfo ../pftpshit
+			rm -f Makefile pftp pftp-static
+			cd src; $(MAKE) clean; ${MAKE} cfgclean; rm -f Makefile; rm -f pftp pftp-static; cd ..
 			cd ..; tar -czf pftpshit-src.tgz trunk-shit ${EXCLUDE}
 			cd ..; tar -czf pftpshit-debug.tgz pftpshit
 			cd ..; rm -rf pftpshit
@@ -53,8 +53,7 @@ distclean:
 			\( -name '*.orig' -o -name '*.rej' -o -name '*~' \
 			-o -name '*.bak' -o -name '#*#' -o -name '.*.orig' \
 			-o -name '.*.rej' -o -name '.SUMS' -o -size 0 \) -type f -print` TAGS tags \
-			Makefile src/Makefile 
-#>/dev/null 2>&1
+			Makefile src/Makefile >/dev/null 2>&1
 
 cfgclean:
 			test -s include/config.h.bak || cp include/config.h include/config.h.bak && sed -i \

@@ -1308,11 +1308,12 @@ bool CTCP::ReadFile(char *name, long size_min) {
     return (TRUE);
 }
 
-void break_handler(int sig) {
+//void break_handler(int sig) {
+void break_handler(int) {
     //signal(SIGINT, break_handler);
 
     // fool -Wall
-    sig = 0;
+//    sig = 0;
 
     /*
     if(tcp_active) {

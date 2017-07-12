@@ -3288,9 +3288,11 @@ void CServer::RemoveFromQueue(int msg, char *name) {
 }
 
 
-bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic) {
+// bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic) {
+bool CServer::DoFXPFile(char *file, bool as_ok, int) {
     char *buffer, *start, *end, port_msg[32], temp[256], *temp_filename, *temp_size;
-    int len, dest_pid;
+//    int len, dest_pid;
+    int len;
     //SERVERLIST *sv_temp = global_server;
     CServer *dest;
     struct timeval before, after;
@@ -3315,7 +3317,7 @@ bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic) {
         return (FALSE);
     */
 
-    dest_pid = destsrv->GetPID();
+//    dest_pid = destsrv->GetPID();
     dest = destsrv;
 
     this->PostBusy("HSHK");
@@ -4955,7 +4957,8 @@ int compare_time_rev(const void *a, const void *b) {
 }
 
 void CServer::SortFilelist(bool add_root, bool transfer_sort) {
-    bool found, finished = FALSE;
+//    bool found, finished = FALSE;
+    bool found = FALSE;
     int m, year, mon;
     time_t elapsed_time;
     struct tm file_time;
@@ -5063,7 +5066,7 @@ void CServer::SortFilelist(bool add_root, bool transfer_sort) {
 
     if ((dir_count > 0) || (file_count > 0)) {
         // nifty quicksort attempt :P
-        finished = FALSE;
+//        finished = FALSE;
         int f, d;
         FILELIST **dir_list, **file_list;
         dir_list = new FILELIST *[dir_count];

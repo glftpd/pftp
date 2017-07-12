@@ -53,7 +53,7 @@ bool FilterFilename(char *filename, char *filter);
 bool FilterDirname(char *filename, char *filter);
 void FireupRemoteServer(CServer * server);
 
-void flag_winch(int dummy) {
+void flag_winch(int) {
     winch_flag = 1;
 }
 
@@ -3452,7 +3452,8 @@ int DoCompare(FILELIST * src, FILELIST * dest, char *excl, int oldcurs) {
     while (src) {
         // should we use this entry?
         if ((FilterFilename(src->name, excl)) && ((src->is_dir == TRUE) ||
-            ((src->is_dir != TRUE) && (src->size != 0i)))) {
+//            ((src->is_dir != TRUE) && (src->size != 0i)))) {
+            ((src->is_dir != TRUE) && (src->size != 0)))) {
 
             dest = dest_start;
             found = FALSE;
@@ -5457,7 +5458,7 @@ void CDisplayHandler::PostMessage(int msg) {
     this->PostMessage(msg, 0, 0);
 }
 
-void CDisplayHandler::PostMessage(int msg, int extended) {
+void CDisplayHandler::PostMessage(int msg, int) {
     this->PostMessage(msg, 0, 0);
 }
 
