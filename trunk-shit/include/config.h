@@ -1,7 +1,7 @@
-// defualts
+// defaults
 // file/dir sorting: 1 = name, 2 = size, 3 = date
 
-#define SLEEP_AWAY 20
+#define SLEEP_AWAY 60
 
 #define DEFAULT_USERNAME "<enter your default ftp username here>"
 #define DEFAULT_PASSWORD ""
@@ -26,9 +26,9 @@
 #define DEFAULT_USE_STEALTH_MODE TRUE
         
 #define DEFAULT_USE_AUTOLOGIN FALSE
-#define DEFAULT_USE_SSL FALSE
-#define DEFAULT_USE_SSL_LIST FALSE
-#define DEFAULT_USE_SSL_DATA FALSE
+#define DEFAULT_USE_SSL TRUE
+#define DEFAULT_USE_SSL_LIST TRUE
+#define DEFAULT_USE_SSL_DATA TRUE
 #define DEFAULT_USE_EXCLUDE_SOURCE TRUE //exclude from copy/detect 
 #define DEFAULT_USE_EXCLUDE_TARGET FALSE //exclude from changing
 #define DEFAULT_USE_CHAINING FALSE

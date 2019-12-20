@@ -53,7 +53,7 @@ bool FilterFilename(char *filename, char *filter);
 bool FilterDirname(char *filename, char *filter);
 void FireupRemoteServer(CServer * server);
 
-void flag_winch(int dummy) {
+void flag_winch(int) {
     winch_flag = 1;
 }
 
@@ -3451,8 +3451,9 @@ int DoCompare(FILELIST * src, FILELIST * dest, char *excl, int oldcurs) {
     // mark entries in source, if they aren't in dest (stupid search algo, who carez here)
     while (src) {
         // should we use this entry?
-        if ((FilterFilename(src->name, excl)) && ((src->is_dir == TRUE)
-            || (src->is_dir != TRUE) && (src->size != 0))) {
+        if ((FilterFilename(src->name, excl)) && ((src->is_dir == TRUE) ||
+//            ((src->is_dir != TRUE) && (src->size != 0i)))) {
+            ((src->is_dir != TRUE) && (src->size != 0)))) {
 
             dest = dest_start;
             found = FALSE;
@@ -5091,14 +5092,20 @@ void CDisplayHandler::Loop(void) {
 
 void CDisplayHandler::InitColors(void) {
     start_color();
-    init_pair(STYLE_NORMAL, COLOR_WHITE, COLOR_BLUE);
-    init_pair(STYLE_MARKED, COLOR_YELLOW, COLOR_BLUE);
-    init_pair(STYLE_INVERSE, COLOR_BLACK, COLOR_CYAN);
-    init_pair(STYLE_MARKED_INVERSE, COLOR_WHITE, COLOR_CYAN);
+//    init_pair(STYLE_NORMAL, COLOR_WHITE, COLOR_BLUE);
+    init_pair(STYLE_NORMAL, COLOR_WHITE, COLOR_BLACK);
+//    init_pair(STYLE_MARKED, COLOR_YELLOW, COLOR_BLUE);
+    init_pair(STYLE_MARKED, COLOR_YELLOW, COLOR_BLACK);
+//    init_pair(STYLE_INVERSE, COLOR_BLACK, COLOR_CYAN);
+    init_pair(STYLE_INVERSE, COLOR_BLACK, COLOR_WHITE);
+//    init_pair(STYLE_MARKED_INVERSE, COLOR_WHITE, COLOR_CYAN);
+    init_pair(STYLE_MARKED_INVERSE, COLOR_BLUE, COLOR_WHITE);
     init_pair(STYLE_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(STYLE_MARKED_STATUS, COLOR_GREEN, COLOR_BLACK);
-    init_pair(STYLE_EXCLUDED, COLOR_RED, COLOR_BLUE);
-    init_pair(STYLE_EXCLUDED_INVERSE, COLOR_RED, COLOR_CYAN);
+//    init_pair(STYLE_EXCLUDED, COLOR_RED, COLOR_BLUE);
+    init_pair(STYLE_EXCLUDED, COLOR_RED, COLOR_BLACK);
+//    init_pair(STYLE_EXCLUDED_INVERSE, COLOR_RED, COLOR_CYAN);
+    init_pair(STYLE_EXCLUDED_INVERSE, COLOR_WHITE, COLOR_RED);
     init_pair(STYLE_REPEATED, COLOR_RED, COLOR_CYAN);
     if (has_colors())
         this->inverse_mono = 0;
@@ -5225,7 +5232,8 @@ void CDisplayHandler::DrawSwitchPairs(void) {
 		if (repeat) {
         	wattrset(this->window_command, COLOR_PAIR(STYLE_REPEATED) | inverse_mono);
         } else {
-        	wattrset(this->window_command, COLOR_PAIR(STYLE_INVERSE) | inverse_mono);
+//        	wattrset(this->window_command, COLOR_PAIR(STYLE_INVERSE) | inverse_mono);
+        	wattrset(this->window_command, COLOR_PAIR(STYLE_WHITE) | inverse_mono);
         }
 
         if (i <= 4) {
@@ -5450,7 +5458,7 @@ void CDisplayHandler::PostMessage(int msg) {
     this->PostMessage(msg, 0, 0);
 }
 
-void CDisplayHandler::PostMessage(int msg, int extended) {
+void CDisplayHandler::PostMessage(int msg, int) {
     this->PostMessage(msg, 0, 0);
 }
 

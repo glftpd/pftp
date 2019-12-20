@@ -1343,7 +1343,8 @@ void CDisplayHandler::UpdateFilelistPageMove(bool dir_up) {
 
 void CDisplayHandler::UpdateFilelistPageEnd(bool dir_up) {
     WINDOW *window;
-    int *ypos, entries, *magic;
+//    int *ypos, entries, *magic;
+    int entries, *magic;
 
     if (this->window_tab == this->window_left) {
         if (this->filelist_left == NULL)
@@ -1352,7 +1353,7 @@ void CDisplayHandler::UpdateFilelistPageEnd(bool dir_up) {
         window = this->window_left;
         entries = this->filelist_left_entries;
         magic = &(this->filelist_left_magic);
-        ypos = &(this->filelist_left_ypos);
+//        ypos = &(this->filelist_left_ypos);
     } else {
         if (this->filelist_right == NULL)
             return ;
@@ -1360,7 +1361,7 @@ void CDisplayHandler::UpdateFilelistPageEnd(bool dir_up) {
         window = this->window_right;
         entries = this->filelist_right_entries;
         magic = &(this->filelist_right_magic);
-        ypos = &(this->filelist_right_ypos);
+//        ypos = &(this->filelist_right_ypos);
     }
 
     // determine how far we should jump
@@ -1469,7 +1470,8 @@ void CDisplayHandler::UpdateFilelistNewPosition(WINDOW * window) {
     FILELIST *fl_start, *fl_temp;
     char *busy, *cwd, *label, *string, *temp_label;
     int entries, magic;
-    int draw_ypos = 1, *ypos, pos, n, width, height =
+//    int draw_ypos = 1, *ypos, pos, n, width, height =
+    int draw_ypos = 1, *ypos, n, width, height =
         this->terminal_max_y - this->status_win_size - 6;
     int format, soffset;
     bool is_left;
@@ -1550,7 +1552,7 @@ void CDisplayHandler::UpdateFilelistNewPosition(WINDOW * window) {
 
     // actually draw the lines
     while ((draw_ypos <= height) && fl_temp) {
-        pos = width - strlen(fl_temp->name) - 22;
+//        pos = width - strlen(fl_temp->name) - 22;
 
         /*
         if(pos >= 0) {

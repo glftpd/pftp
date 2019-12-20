@@ -1,6 +1,6 @@
 #!/bin/sh
-ssldirs="$OPENSSLDIR /usr /usr/local/openssl /usr/lib/openssl /usr/local/ssl /usr/ssl
-         /usr/share /usr/lib /usr/lib/ssl /usr/pkg /opt /opt/ssl /usr/local"
+#ssldirs="$OPENSSLDIR /usr /usr/local/openssl /usr/lib/openssl /usr/local/ssl /usr/ssl
+#         /usr/share /usr/lib /usr/lib/ssl /usr/pkg /opt /opt/ssl /usr/local"
 
 echo "pFTP configure utility by HoE..."
 
@@ -47,6 +47,7 @@ do
         elif [ $ac_option = "lnx" ]; then
             SYS="lnx"
             echo "user defined platform = $SYS"
+            echo "user defined platform = $SYS"
         elif [ $ac_option = "bsd" ]; then
             SYS="bsd"
             echo "user defined platform = $SYS"
@@ -64,9 +65,9 @@ if [ -z $SYS ]; then
     exit 1
 fi
 
-makes='gmake make'
+makebins='gmake make'
 
-for x in $makes; do
+for x in $makebins; do
     xx=`which $x 2>/dev/null`
     if [ ! -z $xx ]; then
         if [ -x $xx ]; then
@@ -83,43 +84,47 @@ fi
 
 echo "Using make = $MAKE"
 
+# TODO:
+# replace with ac code?
+# example: https://github.com/NagiosEnterprises/nrpe/blob/master/configure#L7299
 if [ $USESSL = "1" ]; then
-   if [ -z $HOPENSSLDIR ]; then
-        for x in $ssldirs; do
-            if [ -f $x/lib/libssl.a ]; then
-                if [ -f $x/include/openssl/bio.h ]; then
-                    HOPENSSLDIR=$x
-                fi
-            fi
-        done
-    fi
-
-   if [ -z $HOPENSSLDIR ]; then
-        echo "OpenSSL not found, not using TLS method..."
-        USESSL="0"
-    else
-        USESSL="1"
+#   if [ -z $HOPENSSLDIR ]; then
+#        for x in $ssldirs; do
+#            if [ -f $x/lib/libssl.a ]; then
+#                if [ -f $x/include/openssl/bio.h ]; then
+#                    HOPENSSLDIR=$x
+#                fi
+#            fi
+#        done
+#    fi
+#
+#   if [ -z $HOPENSSLDIR ]; then
+#        echo "OpenSSL not found, not using TLS method..."
+#        USESSL="0"
+#    else
+#        USESSL="1"
+   if [ -d "$HOPENSSLDIR" ]; then
         echo "OpenSSL dir = $HOPENSSLDIR"
    fi
 fi
 
 rm -f src/Makefile
-CPPF="-Wno-vla -Wno-write-strings -Wno-char-subscripts -W -g -Wall -D_REENTRANT  -U_FORTIFY_SOURCE -I../include"
+CPPF="-Wno-vla -Wno-write-strings -Wno-char-subscripts -W -g -Wall -D_REENTRANT -U_FORTIFY_SOURCE -I../include"
 DO="strip pftp"
 BINARY="pftp"
 CPP="g++"
 
 if [ $SYS = "bsd" ]; then
-   LINKF="-pthread -lpanel -lncurses"
+   LINKF="-lpanel -lncurses"
 elif [ $SYS = "cyg" ]; then
     CPPF="$CPPF -DCYGWIN"
     LINKF="-lpanel -lncurses -lpthreadGC"
     DO="strip pftp.exe"
     BINARY="pftp.exe"
 elif [ $SYS = "lnx" ]; then
-    LINKF="-lpanel -lncurses -lpthread"
+    #LINKF="-lpanel -lncurses -lpthread"
+    LINKF="-lpanel -lncurses -lgpm -ltinfo"
 fi
-
 if [ $DEBUG = "1" ]; then
     CPPF="$CPPF -g -DDEBUG"
     LINKF="$LINKF -g"
@@ -131,17 +136,33 @@ fi
 OBJS=""
 if [ $USESSL = "1" ]; then
     OBJS="tlsutil.o"
-    TMP='-I$(SSLDIR)/include -DTLS'
+    TMP='-DTLS' # -I$(SSLDIR)/include
     CPPF="$CPPF $TMP"
-    TMP='-L$(SSLDIR)/lib -lssl -lcrypto -DTLS'
+    TMP='-lssl -lcrypto -DTLS' # -L$(SSLDIR)/lib 
     LINKF="$LINKF $TMP"
-    if [ $SYS = "lnx" ]; then
-        TMP="-ldl"
-        LINKF="$LINKF $TMP"
-    fi
 fi
 
-echo "SSLDIR          = $HOPENSSLDIR" >>src/Makefile
+if [ $SYS = "lnx" ]; then
+  if [ -s /etc/os-release ]; then
+    . /etc/os-release
+  else
+    { grep -q ^7 /etc/debian_version 2>/dev/null && ID="debian" VERSION_ID="7"; } || \
+    { test -s /etc/redhat-release && ID_LIKE="rhel"; }
+  fi
+  if [ "$ID" = "debian" ] && [ "$VERSION_ID" = "7" ]; then
+    TMP="-lz"
+    LINKF="$LINKF $TMP"
+  elif [ -n "$ID_LIKE" ] && [ -z "${ID_LIKE##*rhel*}"]; then
+    CPPF="$CPPF -Wl,-z,relro"
+    TMP="-lz -lgssapi_krb5 -lkrb5 -lcom_err -lk5crypto"
+    LINKF="$LINKF $TMP"
+    echo "Notice: \"$MAKE static\" on rhel needs krb5 libs for openssl which you probaly have to compile yourself."
+  fi
+  TMP="-pthread -ldl"
+  LINKF="$LINKF $TMP"
+fi
+
+#echo "SSLDIR          = $HOPENSSLDIR" >>src/Makefile
 echo "CPPFLAGS        = $CPPF" >>src/Makefile
 echo "LINKFLAGS       = $LINKF" >>src/Makefile
 echo "DO              = $DO" >>src/Makefile

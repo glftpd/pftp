@@ -507,35 +507,35 @@ void CServer::HandleMessage(int msg, char *param, int magic) {
             if (this->server_type == SERVER_TYPE_LOCAL)
                 this->LocalRenTo(param);
             else {
-                if (!this->RenTo(param));
+                if (!this->RenTo(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_NUKE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->Nuke(param));
+                if (!this->Nuke(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_UNNUKE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->UnNuke(param));
+                if (!this->UnNuke(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_WIPE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->Wipe(param));
+                if (!this->Wipe(param)) {};
                 this->EvalError();
             }
             break;
 
         case FOR_SERVER_MSG_UNDUPE:
             if (this->server_type != SERVER_TYPE_LOCAL) {
-                if (!this->UnDupe(param));
+                if (!this->UnDupe(param)) {};
                 this->EvalError();
             }
             break;
@@ -2532,12 +2532,13 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic) {
     fl_head = this->ObtainFilelist(&dummy);
     fl_temp = fl_head;
     while ((okay == FALSE) && (fl_temp != NULL)) {
-        if (this->prefs.use_exclude_source)
+        if (this->prefs.use_exclude_source) {
             filter = FilterFilename(fl_temp->name, this->prefs.exclude_source);
-        else
+        } else {
             filter = FilterFilename(fl_temp->name, NULL);
+        }
 
-        if (filter)
+        if (filter) {
             if (fl_temp->is_dir) {
                 if (strcmp("..", fl_temp->name))
                     okay = TRUE;
@@ -2545,6 +2546,7 @@ bool CServer::DoFXPDir(char *ddirn, int dest_magic) {
                 if (fl_temp->size)
                     okay = TRUE;
             }
+        }
         fl_temp = fl_temp->next;
     }
 
@@ -3286,9 +3288,11 @@ void CServer::RemoveFromQueue(int msg, char *name) {
 }
 
 
-bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic) {
+// bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic) {
+bool CServer::DoFXPFile(char *file, bool as_ok, int) {
     char *buffer, *start, *end, port_msg[32], temp[256], *temp_filename, *temp_size;
-    int len, dest_pid;
+//    int len, dest_pid;
+    int len;
     //SERVERLIST *sv_temp = global_server;
     CServer *dest;
     struct timeval before, after;
@@ -3313,7 +3317,7 @@ bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic) {
         return (FALSE);
     */
 
-    dest_pid = destsrv->GetPID();
+//    dest_pid = destsrv->GetPID();
     dest = destsrv;
 
     this->PostBusy("HSHK");
@@ -4953,7 +4957,8 @@ int compare_time_rev(const void *a, const void *b) {
 }
 
 void CServer::SortFilelist(bool add_root, bool transfer_sort) {
-    bool found, finished = FALSE;
+//    bool found, finished = FALSE;
+    bool found = FALSE;
     int m, year, mon;
     time_t elapsed_time;
     struct tm file_time;
@@ -5061,7 +5066,7 @@ void CServer::SortFilelist(bool add_root, bool transfer_sort) {
 
     if ((dir_count > 0) || (file_count > 0)) {
         // nifty quicksort attempt :P
-        finished = FALSE;
+//        finished = FALSE;
         int f, d;
         FILELIST **dir_list, **file_list;
         dir_list = new FILELIST *[dir_count];

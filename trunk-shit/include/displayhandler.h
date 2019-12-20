@@ -4,7 +4,7 @@
 typedef struct _SWITCH {
     bool used;
     int magic_left, magic_right;
-};
+} _SWITCH;
 
 class CDisplayHandler {
     private:
