@@ -3021,17 +3021,17 @@ bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic)
 //secure data off for fxp
         return (FALSE);
 
+    char* pasv_text = NULL;
+    if (doSSL == 0) {
+        pasv_text = "PASV\r\n";
+    } else {
+        pasv_text = "CPSV\r\n";
+    }
 
     if (fxpmethod == 0) {
 // send PASV, extract PORT info and post file, then wait (until DEST sent PORT and then STOR)
-	char* pasv = NULL;
-	if (doSSL == 0) {
-	    pasv = "PASV\r\n";
-	} else {
-	    pasv = "CPSV\r\n";
-	}
 	
-        if (!this->tcp.SendData(pasv)) {
+        if (!this->tcp.SendData(pasv_text)) {
             this->error = E_CONTROL_RESET;
             this->PostBusy(NULL);
             dest->PostBusy(NULL);
@@ -3242,7 +3242,7 @@ bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic)
         debuglog("normal fxp rejected trying alternative method");
 
 // send PASV, extract PORT info and post file, then wait (until DEST sent PORT and then RETR)
-        if (!dest->tcp.SendData("PASV\r\n")) {
+        if (!dest->tcp.SendData(pasv_text)) {
             this->error = E_CONTROL_RESET;
             this->PostBusy(NULL);
             dest->PostBusy(NULL);

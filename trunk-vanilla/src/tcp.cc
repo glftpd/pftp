@@ -86,7 +86,6 @@ CTCP::CTCP()
     this->in_xdupe = FALSE;
     this->have_accepted = FALSE;
 #ifdef TLS
-
     this->ctrl_con = NULL;
     this->data_con = NULL;
     prot = 0;
@@ -133,6 +132,7 @@ void
 #endif
         close(this->control_sock_fd);
         this->control_connected = FALSE;
+
     }
 }
 
@@ -320,7 +320,7 @@ bool CTCP::SecureData(void)
     SSL_set_fd(this->data_con, this->real_data_sock_fd);
 //this will speed up ssl negotiation !
     SSL_copy_session_id(this->data_con, this->ctrl_con);
-
+    
 /* we do not use client cert in pftp yet */
     err = SSL_connect(this->data_con);
 
