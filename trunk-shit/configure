@@ -152,7 +152,7 @@ if [ $SYS = "lnx" ]; then
   if [ "$ID" = "debian" ] && [ "$VERSION_ID" = "7" ]; then
     TMP="-lz"
     LINKF="$LINKF $TMP"
-  elif [ -n "$ID_LIKE" ] && [ -z "${ID_LIKE##*rhel*}"]; then
+  elif [ -n "$ID_LIKE" ] && [ -z "${ID_LIKE##*rhel*}" ]; then
     CPPF="$CPPF -Wl,-z,relro"
     TMP="-lz -lgssapi_krb5 -lkrb5 -lcom_err -lk5crypto"
     LINKF="$LINKF $TMP"
