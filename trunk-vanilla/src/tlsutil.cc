@@ -163,10 +163,11 @@ int tls_init(void)
 {
 //    int err;
 
-    ENGINE_load_builtin_engines();
-    ENGINE_register_all_complete();
-    SSL_load_error_strings();
-    SSL_library_init();
+    //ENGINE_load_builtin_engines();
+    //ENGINE_register_all_complete();
+    OPENSSL_init_ssl(OPENSSL_INIT_ENGINE_ALL_BUILTIN, NULL);
+    //SSL_load_error_strings();
+    //SSL_library_init();
 
 //gotta play with this one day (prolly will be needed for win ftpds)
 //    ssl_ctx = SSL_CTX_new(SSLv3_client_method());
@@ -181,7 +182,7 @@ int tls_init(void)
     SSL_CTX_set_default_verify_paths(ssl_ctx);
 //    SSL_CTX_set_options(ssl_ctx, SSL_OP_NO_SSLv2);
 //    SSL_CTX_set_default_verify_paths(ssl_ctx);
-//    SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_PEER, verify_callback);
+    SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_NONE, NULL);
 /* set up session caching  */
     SSL_CTX_set_session_cache_mode(ssl_ctx, SSL_SESS_CACHE_CLIENT);
     SSL_CTX_set_session_id_context(ssl_ctx, (const unsigned char *) "1",

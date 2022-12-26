@@ -288,6 +288,10 @@ bool CTCP::SecureControl(void)
         sprintf(this->temp_string, "[Ctrl - Common Name: %s]", temp);
         this->AddLogLine(this->temp_string);
 
+        temp = X509_verify_cert_error_string(SSL_get_verify_result(this->ctrl_con));
+        sprintf(this->temp_string, "[Ctrl - Verification result: %s]", temp);
+        this->AddLogLine(this->temp_string);
+
         temp = SSL_get_version(this->ctrl_con);
         sprintf(this->temp_string, "[Ctrl - Protocol: %s]", temp);
         this->AddLogLine(this->temp_string);
@@ -364,6 +368,10 @@ bool CTCP::SecureData(void)
         if (!(temp = tls_get_commonName(this->data_con)))
             temp = "Not even a commonName!";
         sprintf(this->temp_string, "[Data - Common Name: %s]", temp);
+        this->AddLogLine(this->temp_string);
+
+        temp = X509_verify_cert_error_string(SSL_get_verify_result(this->data_con));
+        sprintf(this->temp_string, "[Data - Verification result: %s]", temp);
         this->AddLogLine(this->temp_string);
 
         temp = SSL_get_version(this->data_con);

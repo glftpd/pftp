@@ -150,5 +150,5 @@ typedef struct _SERVERLIST
 	struct _SERVERLIST	*next;
 } SERVERLIST;
 
-int wild_match(register unsigned char *m, register unsigned char *n);
+int wild_match(unsigned char *m, unsigned char *n);
 #endif

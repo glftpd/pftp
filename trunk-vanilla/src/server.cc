@@ -3028,6 +3028,9 @@ bool CServer::DoFXPFile(char *file, bool as_ok, int destmagic)
         pasv_text = "CPSV\r\n";
     }
 
+//for debugging    
+//fxpmethod = 1;
+
     if (fxpmethod == 0) {
 // send PASV, extract PORT info and post file, then wait (until DEST sent PORT and then STOR)
 	
@@ -4395,11 +4398,11 @@ void CServer::UseDirCache(void)
  *             a * rather than end with one).                            *
  *=======================================================================*/
 
-int wild_match(register unsigned char *m, register unsigned char *n)
+int wild_match(unsigned char *m, unsigned char *n)
 {
     unsigned char *ma = m, *na = n, *lsm = 0, *lsn = 0;
     int match = 1;
-    register int sofar = 0;
+    int sofar = 0;
 
 /* take care of null strings (should never match) */
     if ((ma == 0) || (na == 0) || (!*ma) || (!*na))
