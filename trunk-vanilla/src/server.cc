@@ -1869,12 +1869,22 @@ bool CServer::Login(void)
 
 #ifdef TLS
         if (prefs.use_ssl && this->prefs.label[0] == '@') {
+                this->PostBusy("FTPS");
                 if (!this->tcp.SecureControl()) {
                     sprintf(this->temp_string, "[%s]: %s",
                             this->prefs.label, E_MSG_BAD_TLSCONN);
                     display->PostStatusLine(this->temp_string, TRUE);
                     return FALSE;
+                } else {
+                        sprintf(this->temp_string,
+                                "[%s]: Successfully switched to TLS mode",
+                                this->prefs.label);
+                        display->PostMessageFromServer(SERVER_MSG_NEWLABEL,
+                                                       this->magic,
+                                                       prefs.label);
+                        display->PostStatusLine(temp_string, FALSE);
                 }
+                this->PostBusy("WLCM");
         }
 #endif
 
@@ -1885,35 +1895,37 @@ bool CServer::Login(void)
             return (FALSE);
         }
 #ifdef TLS
-        if (prefs.use_ssl && this->prefs.label[0] != '@') {
-            this->PostBusy("AUTH");
+        if (prefs.use_ssl) {
+            if (this->prefs.label[0] != '@') {
+                this->PostBusy("AUTH");
 
-            if (!this->tcp.SendData("AUTH TLS\r\n")) {
-                this->error = E_CONTROL_RESET;
-                this->PostBusy(NULL);
-                return (FALSE);
-            }
+                if (!this->tcp.SendData("AUTH TLS\r\n")) {
+                    this->error = E_CONTROL_RESET;
+                    this->PostBusy(NULL);
+                    return (FALSE);
+                }
 
-            if (!this->tcp.WaitForMessage()) {
-                this->error = E_BAD_AUTH;
-                this->EvalError();
-                nossl = 1;
-            } else {
-                if (!this->tcp.SecureControl()) {
-//this->error = E_BAD_TLSCONN;
-                    sprintf(this->temp_string, "[%s]: %s",
-                            this->prefs.label, E_MSG_BAD_TLSCONN);
-                    display->PostStatusLine(this->temp_string, TRUE);
+                if (!this->tcp.WaitForMessage()) {
+                    this->error = E_BAD_AUTH;
+                    this->EvalError();
+                    nossl = 1;
                     return FALSE;
                 } else {
-                    sprintf(this->temp_string,
-                            "[%s]: Successfully switched to TLS mode",
-                            this->prefs.label);
-                    display->PostMessageFromServer(SERVER_MSG_NEWLABEL,
-                                                   this->magic,
-                                                   prefs.label);
-                    display->PostStatusLine(temp_string, FALSE);
-
+                    if (!this->tcp.SecureControl()) {
+//this->error = E_BAD_TLSCONN;
+                        sprintf(this->temp_string, "[%s]: %s",
+                                this->prefs.label, E_MSG_BAD_TLSCONN);
+                        display->PostStatusLine(this->temp_string, TRUE);
+                        return FALSE;
+                    } else {
+                        sprintf(this->temp_string,
+                                "[%s]: Successfully switched to TLS mode",
+                                this->prefs.label);
+                        display->PostMessageFromServer(SERVER_MSG_NEWLABEL,
+                                                       this->magic,
+                                                       prefs.label);
+                        display->PostStatusLine(temp_string, FALSE);
+                    }
                 }
             }
         } else {
