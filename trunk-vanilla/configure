@@ -154,11 +154,11 @@ if [ $res -eq 0 ]; then
  CPPF="$CPPF -D_FORTIFY_SOURCE=2 -fstack-protector-all -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
 fi
 
-$CPP  -o tmp.out tmp.c -flto >/dev/null 2>/dev/null
+$CPP  -o tmp.out tmp.c -flto=auto >/dev/null 2>/dev/null
 res=$?
 
 if [ $res -eq 0 ]; then
- CPPF="$CPPF -flto"
+ CPPF="$CPPF -flto=auto"
 fi
 
 $CPP  -o tmp.out tmp.c -fPIE >/dev/null 2>/dev/null

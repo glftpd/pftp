@@ -1,3 +1,4 @@
+MAKEFLAGS += -j
 MAINOBJS = main.o switchserver.o tcp.o displayupdate.o server.o bookmark.o opensitedialog.o displayhandler.o keyhandler.o
 
 .cc.o	:
@@ -18,15 +19,15 @@ switchserver.o     :	../include/tcp.h ../include/server.h ../include/defines.h .
 
 
 dynamic:		$(MAINOBJS) $(OBJS)
-		$(CPP) -o pftp $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN)
+		$(CPP) -o pftp $(CPPFLAGS) $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN)
 		cp -f pftp ..
 
 static:	$(MAINOBJS) $(OBJS)
-		$(CPP) -o pftp-static $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN) -static
+		$(CPP) -o pftp-static $(CPPFLAGS) $(MAINOBJS) $(OBJS) $(LINKFLAGS) $(LINKFLAGSDYN) -static
 		cp -f pftp-static ..
 
 half-static:	$(MAINOBJS) $(OBJS)
-		$(CPP) -o pftp-half-static $(MAINOBJS) $(OBJS) -Wl,-Bstatic $(LINKFLAGS) -Wl,-Bdynamic $(LINKFLAGSDYN)
+		$(CPP) -o pftp-half-static $(CPPFLAGS) $(MAINOBJS) $(OBJS) -Wl,-Bstatic $(LINKFLAGS) -Wl,-Bdynamic $(LINKFLAGSDYN)
 		cp -f pftp-half-static ..
 
 clean:

@@ -1867,6 +1867,17 @@ bool CServer::Login(void)
 
         this->PostBusy("WLCM");
 
+#ifdef TLS
+        if (prefs.use_ssl && this->prefs.label[0] == '@') {
+                if (!this->tcp.SecureControl()) {
+                    sprintf(this->temp_string, "[%s]: %s",
+                            this->prefs.label, E_MSG_BAD_TLSCONN);
+                    display->PostStatusLine(this->temp_string, TRUE);
+                    return FALSE;
+                }
+        }
+#endif
+
 // wait for welcome message
         if (!this->tcp.WaitForMessage()) {
             this->error = E_BAD_WELCOME;
@@ -1874,7 +1885,7 @@ bool CServer::Login(void)
             return (FALSE);
         }
 #ifdef TLS
-        if (prefs.use_ssl) {
+        if (prefs.use_ssl && this->prefs.label[0] != '@') {
             this->PostBusy("AUTH");
 
             if (!this->tcp.SendData("AUTH TLS\r\n")) {
@@ -1893,6 +1904,7 @@ bool CServer::Login(void)
                     sprintf(this->temp_string, "[%s]: %s",
                             this->prefs.label, E_MSG_BAD_TLSCONN);
                     display->PostStatusLine(this->temp_string, TRUE);
+                    return FALSE;
                 } else {
                     sprintf(this->temp_string,
                             "[%s]: Successfully switched to TLS mode",
