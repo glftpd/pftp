@@ -277,11 +277,28 @@ bool CTCP::SecureControl(void)
             sprintf(this->temp_string, "[Ctrl - Issuer:  %s]", temp);
         this->AddLogLine(this->temp_string);
 
-        sprintf(this->temp_string, "[Ctrl - Cipher: %s %s (%d bits)]",
-		SSL_get_cipher_version(ctrl_con),
-                SSL_get_cipher(this->ctrl_con),
-                SSL_get_cipher_bits(this->ctrl_con, NULL));
+        char* cipher_desc = SSL_CIPHER_description(SSL_get_current_cipher(ctrl_con), 0, 0);
+        sprintf(this->temp_string, "[Ctrl - Cipher: %s]", cipher_desc);
+        OPENSSL_free(cipher_desc);
         this->AddLogLine(this->temp_string);
+
+        const char *group_name = SSL_get0_group_name(ctrl_con);
+        sprintf(this->temp_string, "[Ctrl - Key Exchange group: %s]", group_name ? group_name : "(unknown)");
+        this->AddLogLine(this->temp_string);
+
+        const char *sig_name;
+        int signature_res = SSL_get0_signature_name(ctrl_con, &sig_name);
+        if (signature_res) {
+            sprintf(this->temp_string, "[Ctrl - Signature scheme: %s]", sig_name ? sig_name : "(unknown)");
+            this->AddLogLine(this->temp_string);
+        }
+
+        const char *peer_sig_name;
+        int peer_signature_res = SSL_get0_peer_signature_name(ctrl_con, &peer_sig_name);
+        if (peer_signature_res) {
+            sprintf(this->temp_string, "[Ctrl - Peer Signature scheme: %s]", peer_sig_name ? peer_sig_name : "(unknown)");
+            this->AddLogLine(this->temp_string);
+        }
 
         if (!(temp = tls_get_commonName(this->ctrl_con)))
             temp = "Not even a commonName!";
@@ -359,11 +376,28 @@ bool CTCP::SecureData(void)
             sprintf(this->temp_string, "[Data - Issuer:  %s]", temp);
         this->AddLogLine(this->temp_string);
 
-        sprintf(this->temp_string, "[Data - Cipher: %s %s (%d bits)]",
-                SSL_get_cipher_version(data_con),
-                SSL_get_cipher(this->data_con),
-                SSL_get_cipher_bits(this->data_con, NULL));
+        char* cipher_desc = SSL_CIPHER_description(SSL_get_current_cipher(data_con), 0, 0);
+        sprintf(this->temp_string, "[Data - Cipher: %s]", cipher_desc);
+        OPENSSL_free(cipher_desc);
         this->AddLogLine(this->temp_string);
+
+        const char *group_name = SSL_get0_group_name(data_con);
+        sprintf(this->temp_string, "[Data - Key Exchange group: %s]", group_name ? group_name : "(unknown)");
+        this->AddLogLine(this->temp_string);
+
+        const char *sig_name;
+        int signature_res = SSL_get0_signature_name(data_con, &sig_name);
+        if (signature_res) {
+            sprintf(this->temp_string, "[Data - Signature scheme: %s]", sig_name ? sig_name : "(unknown)");
+            this->AddLogLine(this->temp_string);
+        }
+
+        const char *peer_sig_name;
+        int peer_signature_res = SSL_get0_peer_signature_name(data_con, &peer_sig_name);
+        if (peer_signature_res) {
+            sprintf(this->temp_string, "[Data - Peer Signature scheme: %s]", peer_sig_name ? peer_sig_name : "(unknown)");
+            this->AddLogLine(this->temp_string);
+        }
 
         if (!(temp = tls_get_commonName(this->data_con)))
             temp = "Not even a commonName!";
